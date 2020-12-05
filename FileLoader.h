@@ -3,18 +3,19 @@
 
 #include "OccupancyGrid.h"
 #include "History.h"
+#include <string>
 
 class FileLoader {
     private:
         //
     public:
-        OccupancyGrid loadGridMap(string fileName);
-        void loadMeasurements(string fileName, History *history);
-        void loadNoisyMeasurements(string fileName, History *history);
-        void loadControls(string fileName, History *history);
-        void loadNoisyControls(string fileName, History *history);
-        void loadState(string fileName, History *history);
-        void loadSensorAngles(string fileName);
+        vector<vector<double>> loadGridMap(std::string fileName);
+        void loadMeasurements(std::string fileName, History *history);
+        void loadNoisyMeasurements(std::string fileName, History *history);
+        void loadControls(std::string fileName, History *history);
+        void loadNoisyControls(std::string fileName, History *history);
+        void loadState(std::string fileName, History *history);
+        void loadSensorAngles(std::string fileName);
 };
 
 
