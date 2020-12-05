@@ -1,3 +1,6 @@
+#ifndef OCCUPANCY_GRID_H_
+#define OCCUPANCY_GRID_H_
+
 #include <vector>
 #include <iostream>
 #include <cmath>
@@ -30,3 +33,5 @@ class OccupancyGrid {
         void updateCellWithMeasLogodds(tuple<int,int> index, double l);
         void plotGrid();
 };
+
+#endif
