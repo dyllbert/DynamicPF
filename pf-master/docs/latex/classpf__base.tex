@@ -1,0 +1,46 @@
+\hypertarget{classpf__base}{}\section{pf\+\_\+base$<$ float\+\_\+t, dimobs, dimstate $>$ Class Template Reference}
+\label{classpf__base}\index{pf\+\_\+base$<$ float\+\_\+t, dimobs, dimstate $>$@{pf\+\_\+base$<$ float\+\_\+t, dimobs, dimstate $>$}}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classpf__base_a5c38fdea8b41026d6c5709be11065f0a}\label{classpf__base_a5c38fdea8b41026d6c5709be11065f0a}} 
+using {\bfseries float\+\_\+type} = float\+\_\+t
+\item 
+\mbox{\Hypertarget{classpf__base_ab468bc1a4c41a4ad7372281a1db7db8b}\label{classpf__base_ab468bc1a4c41a4ad7372281a1db7db8b}} 
+using {\bfseries osv} = Eigen\+::\+Matrix$<$ float\+\_\+t, dimobs, 1 $>$
+\item 
+\mbox{\Hypertarget{classpf__base_add01ddbbba6953260f53d47bae2888d2}\label{classpf__base_add01ddbbba6953260f53d47bae2888d2}} 
+using {\bfseries ssv} = Eigen\+::\+Matrix$<$ float\+\_\+t, dimstate, 1 $>$
+\item 
+\mbox{\Hypertarget{classpf__base_a6b7fbe89aa5e34880ad81a5f48e82a04}\label{classpf__base_a6b7fbe89aa5e34880ad81a5f48e82a04}} 
+using {\bfseries Mat} = Eigen\+::\+Matrix$<$ float\+\_\+t, Eigen\+::\+Dynamic, Eigen\+::\+Dynamic $>$
+\item 
+\mbox{\Hypertarget{classpf__base_ae409bcfbd5e1bc542134c4e9b6dce6c3}\label{classpf__base_ae409bcfbd5e1bc542134c4e9b6dce6c3}} 
+using {\bfseries func} = std\+::function$<$ const Mat(const ssv \&)$>$
+\item 
+\mbox{\Hypertarget{classpf__base_a0c328d66f991393ec0f1a082d5cbf4a6}\label{classpf__base_a0c328d66f991393ec0f1a082d5cbf4a6}} 
+using {\bfseries funcs} = std\+::vector$<$ func $>$
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classpf__base_aec857789031fd938b7088faa3607707a}\label{classpf__base_aec857789031fd938b7088faa3607707a}} 
+virtual void \hyperlink{classpf__base_aec857789031fd938b7088faa3607707a}{filter} (const osv \&data, const funcs \&fs=funcs())=0
+\begin{DoxyCompactList}\small\item\em the filtering function that must be defined \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classpf__base_a350df818820d6ab0fd6d413022b7f23b}\label{classpf__base_a350df818820d6ab0fd6d413022b7f23b}} 
+virtual float\+\_\+t \hyperlink{classpf__base_a350df818820d6ab0fd6d413022b7f23b}{get\+Log\+Cond\+Like} () const =0
+\begin{DoxyCompactList}\small\item\em the getter method that must be defined (for conditional log-\/likelihood) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classpf__base_a6fd0ef79ffb005b72045881875fcacb8}\label{classpf__base_a6fd0ef79ffb005b72045881875fcacb8}} 
+static constexpr unsigned int {\bfseries dim\+\_\+obs} = dimobs
+\item 
+\mbox{\Hypertarget{classpf__base_a0a13a058c19940f56d7f30ed5f910f7f}\label{classpf__base_a0a13a058c19940f56d7f30ed5f910f7f}} 
+static constexpr unsigned int {\bfseries dim\+\_\+state} = dimstate
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/pf/\hyperlink{pf__base_8h}{pf\+\_\+base.\+h}\end{DoxyCompactItemize}

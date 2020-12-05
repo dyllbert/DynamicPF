@@ -1,0 +1,42 @@
+\hypertarget{auxiliary__pf_8h}{}\section{include/pf/auxiliary\+\_\+pf.h File Reference}
+\label{auxiliary__pf_8h}\index{include/pf/auxiliary\+\_\+pf.\+h@{include/pf/auxiliary\+\_\+pf.\+h}}
+
+
+A base class for Auxiliary Particle Filtering. Inherit from this if you want to use an \hyperlink{classAPF}{A\+PF} for your state space model. Filtering only, no smoothing.  
+
+
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$Eigen/\+Dense$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include \char`\"{}pf\+\_\+base.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rv\+\_\+samp.\+h\char`\"{}}\newline
+Include dependency graph for auxiliary\+\_\+pf.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{auxiliary__pf_8h__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classAPF}{A\+P\+F$<$ nparts, dimx, dimy, resamp\+\_\+t, float\+\_\+t, debug $>$}
+\begin{DoxyCompactList}\small\item\em A base-\/class for Auxiliary Particle Filtering. Filtering only, no smoothing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A base class for Auxiliary Particle Filtering. Inherit from this if you want to use an \hyperlink{classAPF}{A\+PF} for your state space model. Filtering only, no smoothing. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em nparts} & the number of particles \\
+\hline
+{\em dimx} & the dimension of the state \\
+\hline
+{\em dimy} & the dimension of the observations \\
+\hline
+{\em resamp\+\_\+t} & the resampler type \\
+\hline
+\end{DoxyTemplParams}
