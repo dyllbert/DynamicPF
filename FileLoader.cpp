@@ -147,7 +147,17 @@ void FileLoader::loadState(std::string filename, std::string num_steps_fname, Hi
 }
 
 void FileLoader::loadSensorAngles(std::string filename) {
-    // std::vector<double> laser_angles;
-    // std::uint16_t angle;
-    // while ()
+    std::vector<double> laser_angles;
+    std::uint16_t angle;
+    ifstream f(filename, std::ios::in | std::ios::binary);
+    f.seekg(std::ios::end);
+    std::uint64_t num_angles = ((std::uint64_t) f.tellg()) / 2;
+    f.seekg(ifstream::beg);
+    for (std::uint64_t i = 0; i < num_angles; i++) {
+        std::uint16_t angle;
+        f.read(reinterpret_cast<char *>(&angle), sizeof(angle));
+        laser_angles.push_back((double) angle);
+    }
+    f.close();
+    LaserZ::setLaserAngles(laser_angles);
 }
