@@ -10,6 +10,10 @@ OccupancyGridMap::OccupancyGridMap(tuple<double,double> xlim, tuple<double,doubl
     this->ogrid = OccupancyGrid(xlim, ylim, init_grid);
 }
 
+OccupancyGridMap::OccupancyGridMap(OccupancyGrid ogrid) {
+    this->ogrid = ogrid;
+}
+
 double OccupancyGridMap::laserRangeInverseSensorModel(int m_xi, int m_yi, RobotState x_t, double z_t) {
     //return the logodds update for a given map cell, robot state, and meas.
     //Will this need to be replaced with a not-inverse sensor model?
