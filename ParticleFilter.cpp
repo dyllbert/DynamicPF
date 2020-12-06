@@ -8,6 +8,7 @@
 #include <string>
 #include <iterator>
 
+
 using namespace std;
 
 // Some constant values here that can be played with
@@ -42,6 +43,11 @@ typedef struct cell
     int x;
     int y;
 } cell;
+
+bool operator==(const cell lhs, const cell rhs)
+{
+    return ((lhs.x == rhs.x) && (lhs.y == rhs.y));
+}
 
 particle particleArray[NUM_PARTICLES];
 
@@ -167,9 +173,29 @@ void measModel(double laserData[], double angles[], MAP priorMap) //TODO This ne
                 if (y < Y_MIN)
                     y = Y_MIN;
 
-                
-
+                cell index; //FIX THIS WITH AN ACTUAL GET CELL INDEX FUNCTION??????????
+                index.x = floor(x);
+                index.y = floor(y);
+                bool found = false;
+                for (int m = 0; m < cellIndexList.size(); m++)
+                {
+                    if (cellIndexList[m] == index)
+                    {
+                        found = true
+                    }
+                }
+                if (!found)
+                    cellIndexList.push_back(index)
             }
+
+            //THIS IS WHERE IT ALL GETS SUPER JANKY************************************************************************
+            int itty = 0; 
+            for(int r=0; r<cellIndexList.size(); r++)
+            {
+                
+            }
+
+
         }
     }
 }
