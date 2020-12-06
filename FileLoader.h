@@ -9,13 +9,13 @@ class FileLoader {
     private:
         //
     public:
-        vector<vector<double>> loadGridMap(std::string fileName);
-        void loadMeasurements(std::string fileName, History *history);
-        void loadNoisyMeasurements(std::string fileName, History *history);
-        void loadControls(std::string fileName, History *history);
-        void loadNoisyControls(std::string fileName, History *history);
-        void loadState(std::string fileName, History *history);
-        void loadSensorAngles(std::string fileName);
+        vector<vector<double>> loadGridMap(std::string filename);
+        void loadMeasurements(std::string measurements_fname, std::string num_steps_fname, History *history);
+        void loadNoisyMeasurements(std::string filename, std::string num_steps_fname, History *history);
+        void loadControls(std::string filename, std::string num_steps_fname, History *history);
+        void loadNoisyControls(std::string filename, std::string num_steps_fname, History *history);
+        void loadState(std::string filename, std::string num_steps_fname, History *history);
+        void loadSensorAngles(std::string filename);
 };
 
 
