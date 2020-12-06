@@ -15,13 +15,8 @@ class LaserZ {
         std::vector<double> getMeasurements();
         static double getLaserAngle(int laser_index);
         static double getLaserCount();
-        static void setLaserAngles(std::vector<double> laser_angles);
-        static int isInitialized() {
-            if (laser_angles.size() == 0) {
-                return 0;
-            }
-            return 1;
-        }
+        static void setLaserAngles(std::vector<double> angles);
+        static int isInitialized();
 };
 
 #endif

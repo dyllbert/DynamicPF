@@ -1,7 +1,6 @@
 #ifndef FILE_LOADER_H_
 #define FILE_LOADER_H_
 
-#include "OccupancyGrid.h"
 #include "History.h"
 #include <string>
 

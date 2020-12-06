@@ -13,7 +13,7 @@ class History {
         std::vector<ControlU> noisy_controls;
         std::vector<LaserZ> measurements;
         std::vector<LaserZ> noisy_measurements;
-        std::vector<RobotState> state;
+        std::vector<RobotState> states;
     public:
         void loadControlHistory(std::vector<ControlU> controls);
         void loadNoisyControlHistory(std::vector<ControlU> noisy_controls);
@@ -22,6 +22,9 @@ class History {
         void loadRobotStates(std::vector<RobotState> states);
         ControlU getControl(std::uint32_t t);
         LaserZ getMeasurement(std::uint32_t t);
+        ControlU getNoisyControl(std::uint32_t t);
+        LaserZ getNoisyMeasurement(std::uint32_t t);
+        RobotState getState(std::uint32_t t);
 };
 
 
