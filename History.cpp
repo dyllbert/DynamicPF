@@ -1,22 +1,22 @@
 #include "History.h"
 
-void History::loadControlHistory(std::vector<ControlU> controls) {
+void History::setControlHistory(std::vector<ControlU> controls) {
     this->controls = controls;
 }
 
-void History::loadNoisyControlHistory(std::vector<ControlU> noisy_controls) {
+void History::setNoisyControlHistory(std::vector<ControlU> noisy_controls) {
     this->noisy_controls = noisy_controls;
 }
 
-void History::loadMeasurementHistory(std::vector<LaserZ> measurements) {
+void History::setMeasurementHistory(std::vector<LaserZ> measurements) {
     this->measurements = measurements;
 }
 
-void History::loadNoisyMeasurementHistory(std::vector<LaserZ> noisy_measurements) {
+void History::setNoisyMeasurementHistory(std::vector<LaserZ> noisy_measurements) {
     this->noisy_measurements = noisy_measurements;
 }
 
-void History::loadRobotStates(std::vector<RobotState> states) {
+void History::setRobotStates(std::vector<RobotState> states) {
     this->states = states;
 }
 
@@ -38,4 +38,12 @@ LaserZ History::getNoisyMeasurement(std::uint32_t t) {
 
 RobotState History::getState(std::uint32_t t) {
     return this->states[t];
+}
+
+std::uint32_t History::getNumSteps() {
+    return this->num_steps;
+}
+
+void History::setNumSteps(std::uint32_t num_steps) {
+    this->num_steps = num_steps;
 }

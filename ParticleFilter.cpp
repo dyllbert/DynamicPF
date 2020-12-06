@@ -8,11 +8,10 @@
 #include <string>
 #include <iterator>
 
-
 using namespace std;
 
 // Some constant values here that can be played with
-const int NUM_PARTICLES = 20;
+const int NUM_PARTICLES = 3;
 //Positional uncertainty
 const double sigma_pos[3] = {0.3, 0.3, 0.01};
 const int X_MIN = 0;
@@ -25,7 +24,6 @@ bool is_initialized = false;
 
 typedef struct particle
 {
-
     int id;
     double x;
     double y;
@@ -85,6 +83,29 @@ void init(double x, double y, double theta, const double std[])
     is_initialized = true;
 }
 
+void TestInit(double x, double y, double theta, const double std[])
+{
+    default_random_engine gen;
+
+    double std_x, std_y, std_theta;
+
+    std_x = std[0];
+    std_y = std[1];
+    std_theta = std[2];
+
+    for (int index = 0; index < NUM_PARTICLES; index++)
+    {
+        particle new_particle;
+        new_particle.id = index;
+        new_particle.x = index;
+        new_particle.y = index;
+        new_particle.theta = index;
+        new_particle.weight = index;
+        particleArray[index] = new_particle;
+    }
+    is_initialized = true;
+}
+
 void printParticle(int index)
 {
     cout << "ID: " + to_string(particleArray[index].id) << endl
@@ -107,17 +128,32 @@ double toRadians(int degree)
     return degree * M_PI / 180;
 }
 
+double constrainAngle(double x)
+{
+    x = fmod(x + 180, 360);
+    if (x < 0)
+        x += 360;
+    return x - 180;
+}
+
 void motionModel(double u[])
 {
+    //change u to have just one distance and angle
+
     default_random_engine gen;
     uniform_real_distribution<double> distXY(0, 0.04);
     uniform_real_distribution<double> distTheta(0, 0.01);
 
     for (int i = 0; i < NUM_PARTICLES; i++)
     {
-        double angle = toRadians(particleArray[i].theta);
-        double tempX = (u[0] * cos(angle) - u[1] * sin(angle) + particleArray[i].x) + distXY(gen);
-        double tempY = (u[0] * sin(angle) + u[1] * cos(angle) + particleArray[i].y) + distXY(gen);
+        double hypot = u[0];
+        double deltaAngle = u[1];
+        //double angle = toRadians(particleArray[i].theta);
+        double angle = constrainAngle(particleArray[i].theta + u[1]);
+        double angleRad = toRadians(angle);
+
+        double tempX = (u[0] * cos(angleRad) + particleArray[i].x); // + distXY(gen); Noise is already in u, don't need to add
+        double tempY = (u[0] * sin(angleRad) + particleArray[i].y); // + distXY(gen);
 
         if (tempX > X_MAX)
             tempX = X_MAX;
@@ -130,85 +166,128 @@ void motionModel(double u[])
 
         particleArray[i].x = tempX;
         particleArray[i].y = tempY;
-        particleArray[i].theta = fmod(particleArray[i].theta + u[2] + distTheta(gen), 360.0);
+        particleArray[i].theta = angle;
     }
 }
 
-void measModel(double laserData[], double angles[], MAP priorMap) //TODO This needs to get the map figured out
-{
-    double allWeights[NUM_PARTICLES] = {};
+// void measModel(double laserData[], double angles[], MAP priorMap) //TODO This needs to get the map figured out
+// {
+//     double allWeights[NUM_PARTICLES] = {};
 
+//     for (int i = 0; i < NUM_PARTICLES; i++)
+//     {
+//         double particleX = particleArray[i].x;
+//         double particleY = particleArray[i].y;
+//         double particleT = particleArray[y].theta;
+//         double pos[3] = {particleX, particleY, particleT};
+
+//         vector<double> particleDistances; //This will hold the weird weighting system I use????
+
+//         for (int u = 0; u < sizeof(laserData); u++)
+//         {
+//             double xEnd = laserData[u] * cos(toRadians(pos[2] + angles[u])) + pos[0];
+//             double yEnd = laserData[u] * sin(toRadians(pos[2] + angles[u])) + pos[1];
+
+//             double rayAngle = angles[u] + pos[2];
+//             //how big of steps along the data to make
+//             double step = 1;
+//             double numSteps = int(laserData[u] / step);
+//             vector<cell> cellIndexList;
+
+//             for (int r = 0; r < numSteps; r++)
+//             {
+//                 double lan = r / numSteps;
+//                 double x = pos[0] + (xEnd - pos[0]) * lan;
+//                 double y = pos[1] + (yEnd - pos[1]) * lan;
+
+//                 if (x > X_MAX)
+//                     x = X_MAX;
+//                 if (x < X_MIN)
+//                     x = X_MIN;
+//                 if (y > Y_MAX)
+//                     y = Y_MAX;
+//                 if (y < Y_MIN)
+//                     y = Y_MIN;
+
+//                 cell index; //FIX THIS WITH AN ACTUAL GET CELL INDEX FUNCTION??????????
+//                 index.x = floor(x);
+//                 index.y = floor(y);
+//                 bool found = false;
+//                 for (int m = 0; m < cellIndexList.size(); m++)
+//                 {
+//                     if (cellIndexList[m] == index)
+//                     {
+//                         found = true
+//                     }
+//                 }
+//                 if (!found)
+//                     cellIndexList.push_back(index)
+//             }
+
+//             //THIS IS WHERE IT ALL GETS SUPER JANKY************************************************************************
+//             int itty = 0;
+//             for(int r=0; r<cellIndexList.size(); r++)
+//             {
+
+//             }
+
+//         }
+//     }
+// }
+
+void resample()
+{
+    //copy the existing list of particles
+    vector<particle> particleArrayCopy;
     for (int i = 0; i < NUM_PARTICLES; i++)
     {
-        double particleX = particleArray[i].x;
-        double particleY = particleArray[i].y;
-        double particleT = particleArray[y].theta;
-        double pos[3] = {particleX, particleY, particleT};
+        particleArrayCopy.push_back(particleArray[i]);
+    }
 
-        vector<double> particleDistances; //This will hold the weird weighting system I use????
+    //vector of weights of the particles
+    vector<int> weights;
+    for (int i = 0; i < NUM_PARTICLES; i++)
+    {
+        weights.push_back(particleArrayCopy[i].weight);
+    }
 
-        for (int u = 0; u < sizeof(laserData); u++)
-        {
-            double xEnd = laserData[u] * cos(toRadians(pos[2] + angles[u])) + pos[0];
-            double yEnd = laserData[u] * sin(toRadians(pos[2] + angles[u])) + pos[1];
+    //Object of random number engine class that generate pseudo-random numbers
+    //NOTE: http://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine
+    mt19937 gen;
+    //Object for generating discrete disturbutions based on the weights vecotr
+    discrete_distribution<int> weight_dist(weights.begin(), weights.end());
 
-            double rayAngle = angles[u] + pos[2];
-            //how big of steps along the data to make
-            double step = 1;
-            double numSteps = int(laserData[u] / step);
-            vector<cell> cellIndexList;
-
-            for (int r = 0; r < numSteps; r++)
-            {
-                double lan = r / numSteps;
-                double x = pos[0] + (xEnd - pos[0]) * lan;
-                double y = pos[1] + (yEnd - pos[1]) * lan;
-
-                if (x > X_MAX)
-                    x = X_MAX;
-                if (x < X_MIN)
-                    x = X_MIN;
-                if (y > Y_MAX)
-                    y = Y_MAX;
-                if (y < Y_MIN)
-                    y = Y_MIN;
-
-                cell index; //FIX THIS WITH AN ACTUAL GET CELL INDEX FUNCTION??????????
-                index.x = floor(x);
-                index.y = floor(y);
-                bool found = false;
-                for (int m = 0; m < cellIndexList.size(); m++)
-                {
-                    if (cellIndexList[m] == index)
-                    {
-                        found = true
-                    }
-                }
-                if (!found)
-                    cellIndexList.push_back(index)
-            }
-
-            //THIS IS WHERE IT ALL GETS SUPER JANKY************************************************************************
-            int itty = 0; 
-            for(int r=0; r<cellIndexList.size(); r++)
-            {
-                
-            }
-
-
-        }
+    //With the discrete distribution pick out particles according to their
+    //weights. The higher the weight of the particle, the higher are the chances
+    //of the particle being included multiple times.
+    //Discrete_distribution is used here to pick particles with the appropriate
+    //weights(i.e. which meet a threshold)
+    //http://www.cplusplus.com/reference/random/discrete_distribution/
+    //NOTE: Here is an example which helps with the understanding
+    //      http://coliru.stacked-crooked.com/a/3c9005a4cc0ed9d6
+    for (int i = 0; i < NUM_PARTICLES; i++)
+    {
+        //Append the particle to the new list
+        //NOTE: Calling weights_dist with the generator returns the index of one
+        //      of weights in the vector which was used to generate the distribution.
+        particleArray[i] = particleArrayCopy[weight_dist(gen)];
     }
 }
 
+//Testing only
 int main()
 {
-    init(1, 2, 30, sigma_pos);
+    TestInit(1, 2, 30, sigma_pos);
     cout << "Original Particles" << endl
          << "*******************" << endl;
     printAllParticles();
-    double u[3] = {5.5, 5.5, -10};
+    double u[3] = {7, -10};
     motionModel(u);
     cout << "Particles after one motion model" << endl
+         << "***************" << endl;
+    printAllParticles();
+    resample();
+    cout << "Particles after resampling" << endl
          << "***************" << endl;
     printAllParticles();
 }
