@@ -7,10 +7,8 @@
 #include <sstream>
 #include <string>
 #include <iterator>
-#include "matplotlibcpp.h"
 
 using namespace std;
-namespace plt = matplotlibcpp;
 
 // Some constant values here that can be played with
 const int NUM_PARTICLES = 20;
@@ -33,6 +31,17 @@ typedef struct particle
     double theta;
     double weight;
 } particle;
+
+typedef struct MAP
+{
+    //NEED TO SETUP??????
+} MAP;
+
+typedef struct cell
+{
+    int x;
+    int y;
+} cell;
 
 particle particleArray[NUM_PARTICLES];
 
@@ -79,14 +88,103 @@ void printParticle(int index)
          << "Weight: " + to_string(particleArray[index].weight) << endl;
 }
 
-int main()
+void printAllParticles()
 {
-    cout << "Test" << endl;
-    init(1, 2, 30, sigma_pos);
-    for(int i=0;i<NUM_PARTICLES;i++)
+    for (int i = 0; i < NUM_PARTICLES; i++)
     {
         printParticle(i);
     }
+}
+
+double toRadians(int degree)
+{
+    return degree * M_PI / 180;
+}
+
+void motionModel(double u[])
+{
+    default_random_engine gen;
+    uniform_real_distribution<double> distXY(0, 0.04);
+    uniform_real_distribution<double> distTheta(0, 0.01);
+
+    for (int i = 0; i < NUM_PARTICLES; i++)
+    {
+        double angle = toRadians(particleArray[i].theta);
+        double tempX = (u[0] * cos(angle) - u[1] * sin(angle) + particleArray[i].x) + distXY(gen);
+        double tempY = (u[0] * sin(angle) + u[1] * cos(angle) + particleArray[i].y) + distXY(gen);
+
+        if (tempX > X_MAX)
+            tempX = X_MAX;
+        if (tempX < X_MIN)
+            tempX = X_MIN;
+        if (tempY > Y_MAX)
+            tempY = Y_MAX;
+        if (tempY < Y_MIN)
+            tempY = Y_MIN;
+
+        particleArray[i].x = tempX;
+        particleArray[i].y = tempY;
+        particleArray[i].theta = fmod(particleArray[i].theta + u[2] + distTheta(gen), 360.0);
+    }
+}
+
+void measModel(double laserData[], double angles[], MAP priorMap) //TODO This needs to get the map figured out
+{
+    double allWeights[NUM_PARTICLES] = {};
+
+    for (int i = 0; i < NUM_PARTICLES; i++)
+    {
+        double particleX = particleArray[i].x;
+        double particleY = particleArray[i].y;
+        double particleT = particleArray[y].theta;
+        double pos[3] = {particleX, particleY, particleT};
+
+        vector<double> particleDistances; //This will hold the weird weighting system I use????
+
+        for (int u = 0; u < sizeof(laserData); u++)
+        {
+            double xEnd = laserData[u] * cos(toRadians(pos[2] + angles[u])) + pos[0];
+            double yEnd = laserData[u] * sin(toRadians(pos[2] + angles[u])) + pos[1];
+
+            double rayAngle = angles[u] + pos[2];
+            //how big of steps along the data to make
+            double step = 1;
+            double numSteps = int(laserData[u] / step);
+            vector<cell> cellIndexList;
+
+            for (int r = 0; r < numSteps; r++)
+            {
+                double lan = r / numSteps;
+                double x = pos[0] + (xEnd - pos[0]) * lan;
+                double y = pos[1] + (yEnd - pos[1]) * lan;
+
+                if (x > X_MAX)
+                    x = X_MAX;
+                if (x < X_MIN)
+                    x = X_MIN;
+                if (y > Y_MAX)
+                    y = Y_MAX;
+                if (y < Y_MIN)
+                    y = Y_MIN;
+
+                
+
+            }
+        }
+    }
+}
+
+int main()
+{
+    init(1, 2, 30, sigma_pos);
+    cout << "Original Particles" << endl
+         << "*******************" << endl;
+    printAllParticles();
+    double u[3] = {5.5, 5.5, -10};
+    motionModel(u);
+    cout << "Particles after one motion model" << endl
+         << "***************" << endl;
+    printAllParticles();
 }
 
 /**
