@@ -166,6 +166,20 @@ void motionModel(double u[])
 
 void measModel(LaserZ z, OccupancyGrid* ogrid) {
     double allWeights[NUM_PARTICLES];
+
+    /**
+     * Proposed way to update weights:
+     * 1) Get path of the laser
+     * 2) At the end of the path, check to see if the laser reported occupied, or free (reached max range), and get the end cell
+     * 3) Check same path off of each particle, see if end cells match
+     * 4) If end cells DON'T match, automatic fail, decrement weight in some way
+     * 5) If end cells DO match, need to check entire path to make sure they match,
+     *      If they do match, best result, highly likely candidate
+     *      If they don't match, assign weight based on how close: Very early mis-match along path = decrement weight
+     *                                                             Mis-match is close to the end, possible assign tiny amount, or don't decrement, could just be error
+     * /
+
+
 }
 
 /**
