@@ -11,9 +11,9 @@ class LaserZ {
         LaserZ();
         LaserZ(std::vector<double> z);
         void setMeasurements(std::vector<double> z);
-        double getMeasurement(int laser_index);
-        std::vector<double> getMeasurements();
-        static double getLaserAngle(int laser_index);
+        double getMeasurement(int laser_index); //returns the distance the laser traveled
+        std::vector<double> getMeasurements(); //returns the distance of ALL the lasers
+        static double getLaserAngle(int laser_index); //Return the angle of the laser relative to the robot
         static double getLaserCount();
         static void setLaserAngles(std::vector<double> angles);
         static int isInitialized();

@@ -15,7 +15,6 @@
 #include <iterator>
 #include <cmath>
 
-
 using namespace std;
 
 // Some constant values here that can be played with
@@ -164,9 +163,8 @@ void motionModel(double u[])
     }
 }
 
-void measModel(LaserZ z, OccupancyGrid* ogrid) {
-    double allWeights[NUM_PARTICLES];
-
+void measModel(LaserZ z, OccupancyGrid *ogrid)
+{
     /**
      * Proposed way to update weights:
      * 1) Get path of the laser
@@ -176,10 +174,33 @@ void measModel(LaserZ z, OccupancyGrid* ogrid) {
      * 5) If end cells DO match, need to check entire path to make sure they match,
      *      If they do match, best result, highly likely candidate
      *      If they don't match, assign weight based on how close: Very early mis-match along path = decrement weight
-     *                                                             Mis-match is close to the end, possible assign tiny amount, or don't decrement, could just be error
-     * /
+     *                                                             Mis-match close to the end, possible assign tiny amount/don't decrement, could be from error
+     * */
 
+    //For each particle:
+    for (int i = 0; i < NUM_PARTICLES; i++)
+    {
+        particle currParticle = particleArray[i];
 
+        //for each laser to be checked as if it came from each particle
+        for (int r = 0; r < z.getLaserCount(); r++)
+        {
+            double currLaserDist = z.getMeasurement(r);
+            double currLaserAngle = z.getLaserAngle(r);
+
+            //add the relative anlge of the laser to the direction the particle is facing to get the actual angle
+            double currWorkingAngle = constrainAngle(currParticle.theta + currLaserAngle);
+
+            //break the measred distance down into x and y parts
+            double xComponent = currLaserDist * cos(currWorkingAngle);
+            double yComponent = currLaserDist * sin(currWorkingAngle);
+            
+            //add the components to the current x and y position to get the endpoint
+            double xEnd = currParticle.x + xComponent;
+            double yEnd = currParticle.y + yComponent;
+
+        }
+    }
 }
 
 /**
@@ -288,7 +309,7 @@ int main(int argc, char *argv[])
     History history;
     FileLoader loader;
     vector<vector<double>> rawgrid = loader.loadGridMap("occupancy_grid.omap"); // This is the prior map before boxes were moved and the current experiment was ran
-    OccupancyGrid ogrid = OccupancyGrid((std::tuple<double,double>){0, rawgrid[0].size()}, (std::tuple<double><double>){0, rawgrid.size()}, rawgrid);
+    OccupancyGrid ogrid = OccupancyGrid((std::tuple<double, double>){0, rawgrid[0].size()}, (std::tuple<double><double>){0, rawgrid.size()}, rawgrid);
     // Load Controls and Measurements from experiment into memory
     loader.loadSensorAngles("Angles.data");
     loader.loadMeasurements("Measurements (1).data", "number_of_steps.data", &history);
@@ -305,9 +326,9 @@ int main(int argc, char *argv[])
         // Extract data (get measurement z and control u at this time step t)
         LaserZ z = history->getNoisyMeasurement(t);
         ControlU u = history->getNoisyControl(t);
-        RobotState x_true = history->getState(t); // Do not use in PF Algorithm - This is the true value of the state. Just for testing.
+        RobotState x_true = history->getState(t);   // Do not use in PF Algorithm - This is the true value of the state. Just for testing.
         LaserZ z_true = history->getMeasurement(t); // Do not use in PF Algorithm - This is the true value of the measurements. Just for testing.
-        ControlU u_true = history->getControl(t); // Do not use in PF Algorithm - This is the true value of the controls. Just for testing.
+        ControlU u_true = history->getControl(t);   // Do not use in PF Algorithm - This is the true value of the controls. Just for testing.
         // Operate on data to run particle filter algorithm -
         motionModel((double[2]){u.getDDist(), u.getDTheta()});
         //MAIN LOOP
