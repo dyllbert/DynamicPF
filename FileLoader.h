@@ -16,6 +16,7 @@ class FileLoader {
         void loadState(std::string filename, History *history);
         void loadSensorAngles(std::string filename);
         std::uint32_t loadNumSteps(std::string filename, History *history);
+        vector<vector<bool>> loadStaticMap(std::string filename);
 };
 
 

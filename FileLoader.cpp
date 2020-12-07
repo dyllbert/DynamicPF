@@ -4,7 +4,7 @@
 #include "LaserZ.h"
 #include "ControlU.h"
 
-vector<vector<double>> FileLoader::loadGridMap(std::string fileName) {
+std::vector<std::vector<double>> FileLoader::loadGridMap(std::string fileName) {
     // Open file for gridmap
     std::ifstream f(fileName, std::ios::in | std::ios::binary);
     // Extract header string that defines gridmap size
@@ -41,6 +41,38 @@ vector<vector<double>> FileLoader::loadGridMap(std::string fileName) {
     return ogrid;
 }
 
+std::vector<std::vector<bool>> FileLoader::loadStaticMap(std::string fileName) {
+    // Open file for gridmap
+    std::ifstream f(fileName, std::ios::in | std::ios::binary);
+    // Extract header string that defines gridmap size
+    char buffer[200];
+    int done_extracting_header = 0;
+    std::uint32_t i = 0;
+    while (!done_extracting_header) {
+        f.read(buffer + i, 1); 
+        if (buffer[i] == '\0' || i >= 199) {
+            done_extracting_header = 1;
+        }
+        i++;
+    }
+    // Extract values from header string
+    char byte[1];
+    std::uint32_t width;
+    std::uint32_t height;
+    std::uint32_t num_pixels;
+    sscanf(buffer, "%u,%u", &width, &height);
+    // Initialize occupancy grid, and fill with data
+    vector<vector<bool>> sgrid(height, vector<bool>(width));
+    for (std::uint32_t j = 0; j < height; j++) {
+        for (i = 0; i < width; i++) {
+            f.read(byte, 1);
+            sgrid[j][i] = byte[0];
+        }
+    }
+    f.close();
+    return sgrid;
+}
+
 std::uint32_t FileLoader::loadNumSteps(std::string filename, History *history) {
     // Load number of steps from file
     std::ifstream f_steps(filename, std::ios::in);
@@ -51,7 +83,7 @@ std::uint32_t FileLoader::loadNumSteps(std::string filename, History *history) {
     return num_steps;
 }
 
-void FileLoader::loadMeasurements(std::string measurements_fname, History *history) {
+void FileLoader::loadMeasurements(std::string filename, History *history) {
     if (!LaserZ::isInitialized()) {
         throw "ERROR: loadSensorAngles() must be called before loadMeasurements()!";
     }
@@ -62,7 +94,7 @@ void FileLoader::loadMeasurements(std::string measurements_fname, History *histo
     std::uint32_t num_steps = history->getNumSteps();
     // Read measurement file for correct number of steps
     std::vector<LaserZ> measurements;
-    std::ifstream f_meas(measurements_fname, std::ios::in | std::ios::binary);
+    std::ifstream f_meas(filename, std::ios::in | std::ios::binary);
     for (std::uint32_t i = 0; i < num_steps; i++) {
         std::vector<double> meas(LaserZ::getLaserCount(), 0.0);
         for (std::uint16_t j = 0; j < LaserZ::getLaserCount(); j++) {
@@ -85,7 +117,7 @@ void FileLoader::loadNoisyMeasurements(std::string filename, History *history) {
         throw "ERROR: loadNumSteps() must be called before loadNoisyMeasurements()!";
     }
     // Load number of steps from file
-    std::uint32_t num_steps = loadNumSteps(num_steps_fname);
+    std::uint32_t num_steps = history->getNumSteps();
     // Read measurement file for correct number of steps
     std::vector<LaserZ> measurements;
     std::ifstream f(filename, std::ios::in | std::ios::binary);
