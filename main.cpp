@@ -335,7 +335,7 @@ int main(int argc, char *argv[])
         // Operate on data to run particle filter algorithm -
         double uarg[2] = {u.getDDist(), u.getDTheta()};
         motionModel(uarg);
-        measModel(z, dgrid);
+        // measModel(z, dgrid);
         //MAIN LOOP
         /**
          * for loop through each step of the robot
@@ -345,7 +345,7 @@ int main(int argc, char *argv[])
          *  resample //Resmaples based on weight, higher = more likely to move on/propegate
          * }
          * /
-
+         **/
 
         // Use extended sensor model for mapping problem
         // Plot
