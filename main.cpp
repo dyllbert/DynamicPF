@@ -255,8 +255,14 @@ void measModel(LaserZ z)
     }
 }
 
+<<<<<<< HEAD
 void resample()
 {
+=======
+
+
+void resample() {
+>>>>>>> 878d8d714a59dd1a2befad74982255b7c42fbcdf
     // copy the existing list of particles
     vector<particle> particleArrayCopy;
     for (int i = 0; i < NUM_PARTICLES; i++)
@@ -328,7 +334,8 @@ int main()
         {
             stringstream ss_fname;
             ss_fname << "Particles_step" << t << "_" << t / capture_period << ".part";
-            loader.saveState(particleCapture, ss_fname.str());
+            // loader.saveState(particleCapture, ss_fname.str());
+            cout << "Saving to " << ss_fname.str();
         }
         // Extract data (get measurement z and control u at this time step t)
         LaserZ z = history.getNoisyMeasurement(t);
