@@ -41,7 +41,7 @@ std::vector<std::vector<double>> FileManager::loadGridMap(std::string fileName) 
     return ogrid;
 }
 
-std::vector<std::vector<bool>> FileManager::loadStaticMap(std::string fileName) {
+std::vector<std::vector<int>> FileManager::loadStaticMap(std::string fileName) {
     // Open file for gridmap
     std::ifstream f(fileName, std::ios::in | std::ios::binary);
     // Extract header string that defines gridmap size
@@ -62,11 +62,11 @@ std::vector<std::vector<bool>> FileManager::loadStaticMap(std::string fileName) 
     std::uint32_t num_pixels;
     sscanf(buffer, "%u,%u", &width, &height);
     // Initialize occupancy grid, and fill with data
-    vector<vector<bool>> sgrid(height, vector<bool>(width));
+    vector<vector<int>> sgrid(height, vector<int>(width));
     for (std::uint32_t j = 0; j < height; j++) {
         for (i = 0; i < width; i++) {
             f.read(byte, 1);
-            sgrid[j][i] = byte[0];
+            sgrid[j][i] = (int)(byte[0]);
         }
     }
     f.close();
@@ -218,6 +218,7 @@ bool saveState(vector<RobotState> state_snapshot, std::string filename) {
         memmove(bytes, &(x.x), sizeof(x.x));
         memmove(bytes+sizeof(x.x), &(x.y), sizeof(x.y));
         memmove(bytes+sizeof(x.x)+sizeof(x.y), &(x.theta), sizeof(x.theta));
-        //
+        f.write(bytes, sizeof(x.x) + sizeof(x.y) + sizeof(x.theta));
     }
+    f.close();
 }

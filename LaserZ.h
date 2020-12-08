@@ -2,6 +2,8 @@
 #define LASER_Z_H_
 
 #include <vector>
+#define LASER_STD_DEV 3.0
+#define LASER_MAX_RANGE 128.0
 
 class LaserZ {
     private:
@@ -17,6 +19,7 @@ class LaserZ {
         static double getLaserCount();
         static void setLaserAngles(std::vector<double> angles);
         static int isInitialized();
+        static double laserRangeModel(double z, double z_exp);
 };
 
 #endif

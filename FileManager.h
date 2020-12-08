@@ -16,7 +16,7 @@ class FileManager {
         void loadState(std::string filename, History *history);
         void loadSensorAngles(std::string filename);
         std::uint32_t loadNumSteps(std::string filename, History *history);
-        vector<vector<bool>> loadStaticMap(std::string filename);
+        vector<vector<int>> loadStaticMap(std::string filename);
         bool saveState(vector<RobotState> state_snapshot, std::string filename);
 };
 
