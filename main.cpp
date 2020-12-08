@@ -298,29 +298,41 @@ void resample()
 int main()
 {
     // Load Prior Occupancy Grid into memory
+    std::cout << "Loading Occupancy Grid\n";
     History history;
     FileManager loader;
     vector<vector<double>> rawgrid =
         loader.loadGridMap("occupancy_grid.omap"); // This is the prior map before boxes were moved
                                                    // and the current experiment was ran
+    std::cout << "Loading Static/Dynamic Map\n";
     vector<vector<int>> raw_static_grid = loader.loadStaticMap("permanence.pmap");
+    std::cout << "Loading Number of steps\n";
     std::tuple<double, double> xlim((double)0.0, (double)rawgrid[0].size());
     std::tuple<double, double> ylim((double)0.0, (double)rawgrid.size());
     // DynamicOccupancyGridMap ogrid = DynamicOccupancyGridMap(xlim, ylim, rawgrid, raw_static_grid,
     // 0.01, 0.05);
     // Load Controls and Measurements from experiment into memory
     loader.loadNumSteps("number_of_steps.data", &history);
+    std::cout << "Loading Angles\n";
     loader.loadSensorAngles("Angles.data");
+    std::cout << "Loading Z\n";
     loader.loadMeasurements("Measurements (1).data", &history);
+    std::cout << "Loading Z noisy\n";
     loader.loadNoisyMeasurements("Measurements_Noisy (1).data", &history);
+    std::cout << "Loading U\n";
     loader.loadControls("Controls (1).data", &history);
+    std::cout << "Loading U Noisy\n";
     loader.loadNoisyControls("Controls_Noisy (1).data", &history);
+    std::cout << "Loading State\n";
     loader.loadState("State (1).data", &history);
     // Initialize Particle Filter -Dylan made this
+    std::cout << "Initializing Particle Filter\n";
     init(xlim, ylim, rawgrid, raw_static_grid, 0.01, 0.05);
     // Setup Plotting
+    std::cout << "Setup Plotting\n";
     uint32_t capture_period = history.getNumSteps() / 16;
     // Loop through the data stream
+    std::cout << "Beginning Loop\n";
     for (std::uint32_t t = 0; t < history.getNumSteps(); t++)
     {
         // Print particles
