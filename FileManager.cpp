@@ -31,7 +31,7 @@ std::vector<std::vector<double>> FileManager::loadGridMap(std::string fileName) 
         for (i = 0; i < width; i++) {
             f.read(byte, 1);
             if (byte[0] == 0) {
-                ogrid[j][i] = 0.0;
+                ogrid[j][i] = 0.01;
             }
             else {
                 ogrid[j][i] = 1.0;
