@@ -358,7 +358,7 @@ int main()
         for (uint32_t i = 0; i < history.getNumSteps(); i++) {
             LaserZ print_z = history.getNoisyMeasurement(i);
             if (print_z.getMeasurements().size() != 21) {
-                cout << "ERROR: Z only has " << print_z.getMeasurements().size() << " lasers!\n"
+                cout << "ERROR: Z only has " << print_z.getMeasurements().size() << " lasers!\n";
             }
             cout << "[" << i << "] About to loop through " << LaserZ::getLaserCount() << " lasers.\n";
             for (uint32_t j = 0; j < LaserZ::getLaserCount(); j++) {
