@@ -1,10 +1,10 @@
-#include "FileLoader.h"
+#include "FileManager.h"
 #include <fstream>
 #include <stdio.h>
 #include "LaserZ.h"
 #include "ControlU.h"
 
-std::vector<std::vector<double>> FileLoader::loadGridMap(std::string fileName) {
+std::vector<std::vector<double>> FileManager::loadGridMap(std::string fileName) {
     // Open file for gridmap
     std::ifstream f(fileName, std::ios::in | std::ios::binary);
     // Extract header string that defines gridmap size
@@ -41,7 +41,7 @@ std::vector<std::vector<double>> FileLoader::loadGridMap(std::string fileName) {
     return ogrid;
 }
 
-std::vector<std::vector<bool>> FileLoader::loadStaticMap(std::string fileName) {
+std::vector<std::vector<bool>> FileManager::loadStaticMap(std::string fileName) {
     // Open file for gridmap
     std::ifstream f(fileName, std::ios::in | std::ios::binary);
     // Extract header string that defines gridmap size
@@ -73,7 +73,7 @@ std::vector<std::vector<bool>> FileLoader::loadStaticMap(std::string fileName) {
     return sgrid;
 }
 
-std::uint32_t FileLoader::loadNumSteps(std::string filename, History *history) {
+std::uint32_t FileManager::loadNumSteps(std::string filename, History *history) {
     // Load number of steps from file
     std::ifstream f_steps(filename, std::ios::in);
     std::uint32_t num_steps = 0;
@@ -83,7 +83,7 @@ std::uint32_t FileLoader::loadNumSteps(std::string filename, History *history) {
     return num_steps;
 }
 
-void FileLoader::loadMeasurements(std::string filename, History *history) {
+void FileManager::loadMeasurements(std::string filename, History *history) {
     if (!LaserZ::isInitialized()) {
         throw "ERROR: loadSensorAngles() must be called before loadMeasurements()!";
     }
@@ -109,7 +109,7 @@ void FileLoader::loadMeasurements(std::string filename, History *history) {
     history->setMeasurementHistory(measurements);
 }
 
-void FileLoader::loadNoisyMeasurements(std::string filename, History *history) {
+void FileManager::loadNoisyMeasurements(std::string filename, History *history) {
     if (!LaserZ::isInitialized()) {
         throw "ERROR: loadSensorAngles() must be called before loadNoisyMeasurements()!";
     }
@@ -135,7 +135,7 @@ void FileLoader::loadNoisyMeasurements(std::string filename, History *history) {
     history->setMeasurementHistory(measurements);
 }
 
-void FileLoader::loadControls(std::string filename, History *history) {
+void FileManager::loadControls(std::string filename, History *history) {
     if (history->getNumSteps() == 0) {
         throw "ERROR: loadNumSteps() must be called before loadControls()!";
     }
@@ -154,7 +154,7 @@ void FileLoader::loadControls(std::string filename, History *history) {
     history->setControlHistory(controls);
 }
 
-void FileLoader::loadNoisyControls(std::string filename, History *history) {
+void FileManager::loadNoisyControls(std::string filename, History *history) {
     if (history->getNumSteps() == 0) {
         throw "ERROR: loadNumSteps() must be called before loadNoisyControls()!";
     }
@@ -173,7 +173,7 @@ void FileLoader::loadNoisyControls(std::string filename, History *history) {
     history->setControlHistory(controls);
 }
 
-void FileLoader::loadState(std::string filename, History *history) {
+void FileManager::loadState(std::string filename, History *history) {
     if (history->getNumSteps() == 0) {
         throw "ERROR: loadNumSteps() must be called before loadState()!";
     }
@@ -194,7 +194,7 @@ void FileLoader::loadState(std::string filename, History *history) {
     history->setRobotStates(states);
 }
 
-void FileLoader::loadSensorAngles(std::string filename) {
+void FileManager::loadSensorAngles(std::string filename) {
     std::vector<double> laser_angles;
     std::uint16_t angle;
     ifstream f(filename, std::ios::in | std::ios::binary);

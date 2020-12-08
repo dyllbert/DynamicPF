@@ -4,7 +4,7 @@
 #include "History.h"
 #include <string>
 
-class FileLoader {
+class FileManager {
     private:
         //
     public:

@@ -1,4 +1,4 @@
-#include "FileLoader.h"
+#include "FileManager.h"
 #include "RobotState.h"
 #include "History.h"
 #include "DynamicOccupancyGridMap.h"
@@ -307,7 +307,7 @@ int main(int argc, char *argv[])
 {
     // Load Prior Occupancy Grid into memory
     History history;
-    FileLoader loader;
+    FileManager loader;
     vector<vector<double>> rawgrid = loader.loadGridMap("occupancy_grid.omap"); // This is the prior map before boxes were moved and the current experiment was ran
     std::tuple<double,double> xlim((double)0.0, (double)rawgrid[0].size());
     std::tuple<double,double> ylim((double)0.0, (double) rawgrid.size());
