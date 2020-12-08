@@ -128,11 +128,11 @@ void DynamicOccupancyGrid::updateDynamicCells() {
         for (int j = 0; j < this->grid[i].size(); j++) {
             if (this->st_mtx[i][j] == 0) { //If dynamic
                 p_recurs = 1-1/(1+exp(this->grid[i][j]));
-                if (p_recurs < 0.5) { //if probably free in the previous time step
-                    p_sum = p_occ_from_occ + p_occ_from_free*p_recurs - p_occ_from_occ*p_recurs;
-                } else { //if probably occupied in the previous time step
-                    p_sum = p_occ_from_free + p_occ_from_occ*p_recurs - p_occ_from_free*p_recurs;
-                }
+                //if (p_recurs < 0.5) { //if probably free in the previous time step
+                //    p_sum =  p_occ_from_free*p_recurs + p_occ_from_occ*(1 - p_recurs);
+                //} else { //if probably occupied in the previous time step
+                    p_sum = p_occ_from_occ*p_recurs + p_occ_from_free*(1 - p_recurs);
+                //}
                 l_sum = log(p_sum/(1-p_sum));
                 this->grid[i][j] = l_sum;
             }
