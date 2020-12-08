@@ -318,7 +318,7 @@ int main()
                 ss_omap << ".";
             }
         }
-        ss_omap << "|\n";
+        ss_omap << "|\r\n";
     }
     std::cout << ss_omap.str();
     ofstream ogrid_ascii("ogrid_ascii.txt", ios::out);
