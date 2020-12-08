@@ -1,5 +1,7 @@
 #include "LaserZ.h"
 #include <cmath>
+#include <cstdio>
+#include <iostream>
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -34,7 +36,10 @@ double LaserZ::getLaserCount() {
 
 void LaserZ::setLaserAngles(std::vector<double> angles) {
     // LaserZ::laser_angles = angles;
-    for (int i = 0; i < 21; i++) {
+    if (angles.size() != 21) {
+        std::cout << "ERROR: There should be 21 laser angles. " << angles.size() << " were provided.\n";
+    }
+    for (int i = 0; i < 21 && i < angles.size(); i++) {
         laser_angles[i] = angles[i];
     }
 }
