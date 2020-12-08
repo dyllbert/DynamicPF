@@ -19,7 +19,8 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#define PRINT_OUT_OGRID 1
+#define PRINT_OUT_OGRID 0
+#define PRINT_OUT_NOISY_MEASUREMENTS 1
 
 using namespace std;
 
@@ -347,6 +348,22 @@ int main()
     loader.loadMeasurements("Measurements (1).data", &history);
     std::cout << "Loading Z noisy\n";
     loader.loadNoisyMeasurements("Measurements_Noisy (1).data", &history);
+    #if PRINT_OUT_NOISY_MEASUREMENTS
+    ofstream f_znoisy("noisy_z_ascii.txt", ios::out);
+    if (f_znoisy) {
+        for (uint32_t i = 0; i < history.getNumSteps(); i++) {
+            LaserZ print_z = history.getNoisyMeasurement(i);
+            for (uint32_t j = 0; j < LaserZ::getLaserCount(); j++) {
+                f_znoisy << "[" << j << "]" << print_z.getMeasurement(j) << " ";
+                if (print_z.getMeasurement(j) < 0.0) {
+                    cout << "Warning - Measurement of value " << print_z.getMeasurement(j) << "\n";
+                }
+            }
+            f_znoisy << "\n";
+        }
+    }
+    f_znoisy.close();
+    #endif
     std::cout << "Loading U\n";
     loader.loadControls("Controls (1).data", &history);
     std::cout << "Loading U Noisy\n";
