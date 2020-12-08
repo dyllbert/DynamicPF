@@ -255,14 +255,8 @@ void measModel(LaserZ z)
     }
 }
 
-<<<<<<< HEAD
 void resample()
 {
-=======
-
-
-void resample() {
->>>>>>> 878d8d714a59dd1a2befad74982255b7c42fbcdf
     // copy the existing list of particles
     vector<particle> particleArrayCopy;
     for (int i = 0; i < NUM_PARTICLES; i++)
