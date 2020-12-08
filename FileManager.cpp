@@ -209,3 +209,15 @@ void FileManager::loadSensorAngles(std::string filename) {
     f.close();
     LaserZ::setLaserAngles(laser_angles);
 }
+
+bool saveState(vector<RobotState> state_snapshot, std::string filename) {
+    std::ofstream f(filename, std::ios::out | std::ios::binary);
+    for (std::uint32_t i = 0; i < state_snapshot.size(); i++) {
+        RobotState x = state_snapshot[i];
+        char bytes[sizeof(double) * 3];
+        memmove(bytes, &(x.x), sizeof(x.x));
+        memmove(bytes+sizeof(x.x), &(x.y), sizeof(x.y));
+        memmove(bytes+sizeof(x.x)+sizeof(x.y), &(x.theta), sizeof(x.theta));
+        //
+    }
+}
