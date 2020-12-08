@@ -372,7 +372,7 @@ int main()
     loader.loadNoisyControls("Controls_Noisy (1).data", &history);
     std::cout << "Loading State\n";
     loader.loadState("State (1).data", &history);
-    // Initialize Particle Filter -Dylan made this
+    // Initialize Particle Filter -Dylan made this 
     std::cout << "Initializing Particle Filter\n";
     init(xlim, ylim, rawgrid, raw_static_grid, 0.01, 0.05);
     // Setup Plotting
