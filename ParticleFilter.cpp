@@ -11,7 +11,7 @@
 using namespace std;
 
 // Some constant values here that can be played with
-const int NUM_PARTICLES = 3;
+const int NUM_PARTICLES = 10;
 //Positional uncertainty
 const double sigma_pos[3] = {0.3, 0.3, 0.01};
 const int X_MIN = 0;
@@ -100,7 +100,7 @@ void TestInit(double x, double y, double theta, const double std[])
         new_particle.x = index;
         new_particle.y = index;
         new_particle.theta = index;
-        new_particle.weight = index;
+        new_particle.weight = rand()%10 - 5;
         particleArray[index] = new_particle;
     }
     is_initialized = true;
@@ -271,6 +271,7 @@ void resample()
         //NOTE: Calling weights_dist with the generator returns the index of one
         //      of weights in the vector which was used to generate the distribution.
         particleArray[i] = particleArrayCopy[weight_dist(gen)];
+        particleArray[i].id = i;
     }
 }
 
