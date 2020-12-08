@@ -1,0 +1,468 @@
+==1004== Memcheck, a memory error detector
+==1004== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1004== Using Valgrind-3.15.0-608cb11914-20190413 and LibVEX; rerun with -h for copyright info
+==1004== Command: ./dynamicpf
+==1004== Parent PID: 631
+==1004== 
+--1004-- 
+--1004-- Valgrind options:
+--1004--    --leak-check=full
+--1004--    --show-leak-kinds=all
+--1004--    --track-origins=yes
+--1004--    --verbose
+--1004--    --log-file=valgrind-out.txt
+--1004-- Contents of /proc/version:
+--1004--   Linux version 4.4.0-19041-Microsoft (Microsoft@Microsoft.com) (gcc version 5.4.0 (GCC) ) #488-Microsoft Mon Sep 01 13:43:00 PST 2020
+--1004-- 
+--1004-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand
+--1004-- Page sizes: currently 4096, max supported 4096
+--1004-- Valgrind library directory: /usr/lib/x86_64-linux-gnu/valgrind
+--1004-- Reading syms from /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf
+--1004-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-2.31.so
+--1004--   Considering /usr/lib/x86_64-linux-gnu/ld-2.31.so ..
+--1004--   .. CRC mismatch (computed 6cded93a wanted 1af57820)
+--1004--   Considering /lib/x86_64-linux-gnu/ld-2.31.so ..
+--1004--   .. CRC mismatch (computed 6cded93a wanted 1af57820)
+--1004--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.31.so ..
+--1004--   .. CRC is valid
+--1004-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/memcheck-amd64-linux
+--1004--    object doesn't have a symbol table
+--1004--    object doesn't have a dynamic symbol table
+--1004-- Scheduler: using generic scheduler lock implementation.
+--1004-- Reading suppressions file: /usr/lib/x86_64-linux-gnu/valgrind/default.supp
+==1004== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-1004-by-dylan-on-???
+==1004== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-1004-by-dylan-on-???
+==1004== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-1004-by-dylan-on-???
+==1004== 
+==1004== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==1004== don't want to do, unless you know exactly what you're doing,
+==1004== or are doing some strange experiment):
+==1004==   /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=1004 ...command...
+==1004== 
+==1004== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==1004==   /path/to/gdb ./dynamicpf
+==1004== and then give GDB the following command
+==1004==   target remote | /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=1004
+==1004== --pid is optional if only one valgrind process is running
+==1004== 
+==1004== error calling PR_SET_PTRACER, vgdb might block
+--1004-- REDIR: 0x4022d80 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c9ce2 (???)
+--1004-- REDIR: 0x4022b50 (ld-linux-x86-64.so.2:index) redirected to 0x580c9cfc (???)
+--1004-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_core-amd64-linux.so
+--1004--    object doesn't have a symbol table
+--1004-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so
+--1004--    object doesn't have a symbol table
+==1004== WARNING: new redirection conflicts with existing -- ignoring it
+--1004--     old: 0x04022d80 (strlen              ) R-> (0000.0) 0x580c9ce2 ???
+--1004--     new: 0x04022d80 (strlen              ) R-> (2007.0) 0x0483f060 strlen
+--1004-- REDIR: 0x401f560 (ld-linux-x86-64.so.2:strcmp) redirected to 0x483ffd0 (strcmp)
+--1004-- REDIR: 0x40232e0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4843a20 (mempcpy)
+--1004-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.28
+--1004--    object doesn't have a symbol table
+--1004-- Reading syms from /usr/lib/x86_64-linux-gnu/libm-2.31.so
+--1004--   Considering /usr/lib/x86_64-linux-gnu/libm-2.31.so ..
+--1004--   .. CRC mismatch (computed b88da5c9 wanted 1658d783)
+--1004--   Considering /lib/x86_64-linux-gnu/libm-2.31.so ..
+--1004--   .. CRC mismatch (computed b88da5c9 wanted 1658d783)
+--1004--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.31.so ..
+--1004--   .. CRC is valid
+--1004-- Reading syms from /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+--1004--    object doesn't have a symbol table
+--1004-- Reading syms from /usr/lib/x86_64-linux-gnu/libc-2.31.so
+--1004--   Considering /usr/lib/x86_64-linux-gnu/libc-2.31.so ..
+--1004--   .. CRC mismatch (computed cd1655d1 wanted 09373696)
+--1004--   Considering /lib/x86_64-linux-gnu/libc-2.31.so ..
+--1004--   .. CRC mismatch (computed cd1655d1 wanted 09373696)
+--1004--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.31.so ..
+--1004--   .. CRC is valid
+--1004-- REDIR: 0x4c42600 (libc.so.6:memmove) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c41900 (libc.so.6:strncpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c42930 (libc.so.6:strcasecmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c41220 (libc.so.6:strcat) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c41960 (libc.so.6:rindex) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c43dd0 (libc.so.6:rawmemchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c5ee60 (libc.so.6:wmemchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c5e9a0 (libc.so.6:wcscmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c42760 (libc.so.6:mempcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c42590 (libc.so.6:bcmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c41890 (libc.so.6:strncmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c412d0 (libc.so.6:strcmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c426c0 (libc.so.6:memset) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c5e960 (libc.so.6:wcschr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c417f0 (libc.so.6:strnlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c413b0 (libc.so.6:strcspn) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c42980 (libc.so.6:strncasecmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c41350 (libc.so.6:strcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c42ad0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c600d0 (libc.so.6:wcsnlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c5e9e0 (libc.so.6:wcscpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c419a0 (libc.so.6:strpbrk) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c41280 (libc.so.6:index) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c417b0 (libc.so.6:strlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c4ad20 (libc.so.6:memrchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c429d0 (libc.so.6:strcasecmp_l) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c42550 (libc.so.6:memchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c5eab0 (libc.so.6:wcslen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c41c60 (libc.so.6:strspn) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c428d0 (libc.so.6:stpncpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c42870 (libc.so.6:stpcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c43e10 (libc.so.6:strchrnul) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4c42a20 (libc.so.6:strncasecmp_l) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1004-- REDIR: 0x4d2a490 (libc.so.6:__strrchr_avx2) redirected to 0x483ea10 (rindex)
+--1004-- REDIR: 0x4c3c260 (libc.so.6:malloc) redirected to 0x483b780 (malloc)
+--1004-- REDIR: 0x4d2a660 (libc.so.6:__strlen_avx2) redirected to 0x483ef40 (strlen)
+--1004-- REDIR: 0x4d26c50 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x48421e0 (bcmp)
+--1004-- REDIR: 0x4d25b60 (libc.so.6:__strcmp_avx2) redirected to 0x483fed0 (strcmp)
+--1004-- REDIR: 0x48fec10 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x483bdf0 (operator new(unsigned long))
+--1004-- REDIR: 0x4d2d670 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x48429f0 (memmove)
+--1004-- REDIR: 0x4c3c850 (libc.so.6:free) redirected to 0x483c9d0 (free)
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x11F811: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+--1004-- REDIR: 0x4d26790 (libc.so.6:__rawmemchr_avx2) redirected to 0x4843580 (rawmemchr)
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x484358C: rawmemchr (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1004==    by 0x4C35F35: _IO_str_init_static_internal (strops.c:41)
+==1004==    by 0x4C054C2: _IO_strfile_read (strfile.h:95)
+==1004==    by 0x4C054C2: __isoc99_sscanf (isoc99_sscanf.c:28)
+==1004==    by 0x11F85A: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x1179FB: std::vector<double, std::allocator<double> >::_S_check_init_len(unsigned long, std::allocator<double> const&) (stl_vector.h:1766)
+==1004==    by 0x1211DD: std::vector<double, std::allocator<double> >::vector(unsigned long, std::allocator<double> const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F899: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x1134FF: std::_Vector_base<double, std::allocator<double> >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x113FC4: std::_Vector_base<double, std::allocator<double> >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x111E4C: std::_Vector_base<double, std::allocator<double> >::_Vector_base(unsigned long, std::allocator<double> const&) (stl_vector.h:302)
+==1004==    by 0x1211F2: std::vector<double, std::allocator<double> >::vector(unsigned long, std::allocator<double> const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F899: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x116DC9: __gnu_cxx::new_allocator<double>::allocate(unsigned long, void const*) (new_allocator.h:104)
+==1004==    by 0x11546E: std::allocator_traits<std::allocator<double> >::allocate(std::allocator<double>&, unsigned long) (alloc_traits.h:444)
+==1004==    by 0x113513: std::_Vector_base<double, std::allocator<double> >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x113FC4: std::_Vector_base<double, std::allocator<double> >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x111E4C: std::_Vector_base<double, std::allocator<double> >::_Vector_base(unsigned long, std::allocator<double> const&) (stl_vector.h:302)
+==1004==    by 0x1211F2: std::vector<double, std::allocator<double> >::vector(unsigned long, std::allocator<double> const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F899: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x483BE10: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1004==    by 0x116DDF: __gnu_cxx::new_allocator<double>::allocate(unsigned long, void const*) (new_allocator.h:114)
+==1004==    by 0x11546E: std::allocator_traits<std::allocator<double> >::allocate(std::allocator<double>&, unsigned long) (alloc_traits.h:444)
+==1004==    by 0x113513: std::_Vector_base<double, std::allocator<double> >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x113FC4: std::_Vector_base<double, std::allocator<double> >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x111E4C: std::_Vector_base<double, std::allocator<double> >::_Vector_base(unsigned long, std::allocator<double> const&) (stl_vector.h:302)
+==1004==    by 0x1211F2: std::vector<double, std::allocator<double> >::vector(unsigned long, std::allocator<double> const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F899: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x124580: __gnu_cxx::__enable_if<std::__is_scalar<double>::__value, double*>::__type std::__fill_n_a<double*, unsigned long, double>(double*, unsigned long, double const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x1241C8: double* std::fill_n<double*, unsigned long, double>(double*, unsigned long, double const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x123A49: double* std::__uninitialized_default_n_1<true>::__uninit_default_n<double*, unsigned long>(double*, unsigned long) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x1234DE: double* std::__uninitialized_default_n<double*, unsigned long>(double*, unsigned long) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x122923: double* std::__uninitialized_default_n_a<double*, unsigned long, double>(double*, unsigned long, std::allocator<double>&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x121928: std::vector<double, std::allocator<double> >::_M_default_initialize(unsigned long) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x121205: std::vector<double, std::allocator<double> >::vector(unsigned long, std::allocator<double> const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F899: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x12198C: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_S_check_init_len(unsigned long, std::allocator<std::vector<double, std::allocator<double> > > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x121261: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::vector(unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F8BE: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x113771: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x112E72: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x1108D6: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_Vector_base(unsigned long, std::allocator<std::vector<double, std::allocator<double> > > const&) (stl_vector.h:302)
+==1004==    by 0x121276: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::vector(unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F8BE: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x116EEB: __gnu_cxx::new_allocator<std::vector<double, std::allocator<double> > >::allocate(unsigned long, void const*) (new_allocator.h:104)
+==1004==    by 0x11561E: std::allocator_traits<std::allocator<std::vector<double, std::allocator<double> > > >::allocate(std::allocator<std::vector<double, std::allocator<double> > >&, unsigned long) (alloc_traits.h:444)
+==1004==    by 0x113785: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x112E72: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x1108D6: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_Vector_base(unsigned long, std::allocator<std::vector<double, std::allocator<double> > > const&) (stl_vector.h:302)
+==1004==    by 0x121276: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::vector(unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F8BE: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x483BE10: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1004==    by 0x116F0A: __gnu_cxx::new_allocator<std::vector<double, std::allocator<double> > >::allocate(unsigned long, void const*) (new_allocator.h:114)
+==1004==    by 0x11561E: std::allocator_traits<std::allocator<std::vector<double, std::allocator<double> > > >::allocate(std::allocator<std::vector<double, std::allocator<double> > >&, unsigned long) (alloc_traits.h:444)
+==1004==    by 0x113785: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x112E72: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x1108D6: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_Vector_base(unsigned long, std::allocator<std::vector<double, std::allocator<double> > > const&) (stl_vector.h:302)
+==1004==    by 0x121276: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::vector(unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F8BE: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== Warning: set address range perms: large range [0x59c9d040, 0xc69158b0) (undefined)
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x123A86: std::vector<double, std::allocator<double> >* std::__uninitialized_fill_n<false>::__uninit_fill_n<std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > >(std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x123513: std::vector<double, std::allocator<double> >* std::uninitialized_fill_n<std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > >(std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x122958: std::vector<double, std::allocator<double> >* std::__uninitialized_fill_n_a<std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> >, std::vector<double, std::allocator<double> > >(std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > >&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x1219F7: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_fill_initialize(unsigned long, std::vector<double, std::allocator<double> > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x12128D: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::vector(unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F8BE: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== 
+==1004== Process terminating with default action of signal 2 (SIGINT)
+==1004==    at 0x48FEC10: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.28)
+==1004==    by 0x116DDF: __gnu_cxx::new_allocator<double>::allocate(unsigned long, void const*) (new_allocator.h:114)
+==1004==    by 0x11546E: std::allocator_traits<std::allocator<double> >::allocate(std::allocator<double>&, unsigned long) (alloc_traits.h:444)
+==1004==    by 0x113513: std::_Vector_base<double, std::allocator<double> >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x113FC4: std::_Vector_base<double, std::allocator<double> >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x111E4C: std::_Vector_base<double, std::allocator<double> >::_Vector_base(unsigned long, std::allocator<double> const&) (stl_vector.h:302)
+==1004==    by 0x10FABC: std::vector<double, std::allocator<double> >::vector(std::vector<double, std::allocator<double> > const&) (stl_vector.h:552)
+==1004==    by 0x116C51: void std::_Construct<std::vector<double, std::allocator<double> >, std::vector<double, std::allocator<double> > const&>(std::vector<double, std::allocator<double> >*, std::vector<double, std::allocator<double> > const&) (stl_construct.h:75)
+==1004==    by 0x123AA5: std::vector<double, std::allocator<double> >* std::__uninitialized_fill_n<false>::__uninit_fill_n<std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > >(std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x123513: std::vector<double, std::allocator<double> >* std::uninitialized_fill_n<std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > >(std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x122958: std::vector<double, std::allocator<double> >* std::__uninitialized_fill_n_a<std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> >, std::vector<double, std::allocator<double> > >(std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > >&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x1219F7: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_fill_initialize(unsigned long, std::vector<double, std::allocator<double> > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== HEAP SUMMARY:
+==1004==     in use at exit: 3,385,651,668 bytes in 6,292,888 blocks
+==1004==   total heap usage: 6,292,890 allocs, 2 frees, 3,385,724,844 bytes allocated
+==1004== 
+==1004== Searching for pointers to 6,292,888 not-freed blocks
+==1004== Checked 1,711,812,080 bytes
+==1004== 
+==1004== 20 bytes in 1 blocks are still reachable in loss record 1 of 4
+==1004==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1004==    by 0x499986C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.28)
+==1004==    by 0x10CDB3: main (main.cpp:304)
+==1004== 
+==1004== 248 bytes in 1 blocks are still reachable in loss record 2 of 4
+==1004==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1004==    by 0x116DDF: __gnu_cxx::new_allocator<double>::allocate(unsigned long, void const*) (new_allocator.h:114)
+==1004==    by 0x11546E: std::allocator_traits<std::allocator<double> >::allocate(std::allocator<double>&, unsigned long) (alloc_traits.h:444)
+==1004==    by 0x113513: std::_Vector_base<double, std::allocator<double> >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x113FC4: std::_Vector_base<double, std::allocator<double> >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x111E4C: std::_Vector_base<double, std::allocator<double> >::_Vector_base(unsigned long, std::allocator<double> const&) (stl_vector.h:302)
+==1004==    by 0x1211F2: std::vector<double, std::allocator<double> >::vector(unsigned long, std::allocator<double> const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F899: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004== 
+==1004== 1,560,635,480 bytes in 6,292,885 blocks are still reachable in loss record 3 of 4
+==1004==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1004==    by 0x116DDF: __gnu_cxx::new_allocator<double>::allocate(unsigned long, void const*) (new_allocator.h:114)
+==1004==    by 0x11546E: std::allocator_traits<std::allocator<double> >::allocate(std::allocator<double>&, unsigned long) (alloc_traits.h:444)
+==1004==    by 0x113513: std::_Vector_base<double, std::allocator<double> >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x113FC4: std::_Vector_base<double, std::allocator<double> >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x111E4C: std::_Vector_base<double, std::allocator<double> >::_Vector_base(unsigned long, std::allocator<double> const&) (stl_vector.h:302)
+==1004==    by 0x10FABC: std::vector<double, std::allocator<double> >::vector(std::vector<double, std::allocator<double> > const&) (stl_vector.h:552)
+==1004==    by 0x116C51: void std::_Construct<std::vector<double, std::allocator<double> >, std::vector<double, std::allocator<double> > const&>(std::vector<double, std::allocator<double> >*, std::vector<double, std::allocator<double> > const&) (stl_construct.h:75)
+==1004==    by 0x123AA5: std::vector<double, std::allocator<double> >* std::__uninitialized_fill_n<false>::__uninit_fill_n<std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > >(std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x123513: std::vector<double, std::allocator<double> >* std::uninitialized_fill_n<std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > >(std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x122958: std::vector<double, std::allocator<double> >* std::__uninitialized_fill_n_a<std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> >, std::vector<double, std::allocator<double> > >(std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > >&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x1219F7: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_fill_initialize(unsigned long, std::vector<double, std::allocator<double> > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== 1,825,015,920 bytes in 1 blocks are still reachable in loss record 4 of 4
+==1004==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1004==    by 0x116F0A: __gnu_cxx::new_allocator<std::vector<double, std::allocator<double> > >::allocate(unsigned long, void const*) (new_allocator.h:114)
+==1004==    by 0x11561E: std::allocator_traits<std::allocator<std::vector<double, std::allocator<double> > > >::allocate(std::allocator<std::vector<double, std::allocator<double> > >&, unsigned long) (alloc_traits.h:444)
+==1004==    by 0x113785: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x112E72: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x1108D6: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_Vector_base(unsigned long, std::allocator<std::vector<double, std::allocator<double> > > const&) (stl_vector.h:302)
+==1004==    by 0x121276: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::vector(unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F8BE: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004== 
+==1004== LEAK SUMMARY:
+==1004==    definitely lost: 0 bytes in 0 blocks
+==1004==    indirectly lost: 0 bytes in 0 blocks
+==1004==      possibly lost: 0 bytes in 0 blocks
+==1004==    still reachable: 3,385,651,668 bytes in 6,292,888 blocks
+==1004==         suppressed: 0 bytes in 0 blocks
+==1004== 
+==1004== ERROR SUMMARY: 6292928 errors from 12 contexts (suppressed: 0 from 0)
+==1004== 
+==1004== 1 errors in context 1 of 12:
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x483BE10: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1004==    by 0x116F0A: __gnu_cxx::new_allocator<std::vector<double, std::allocator<double> > >::allocate(unsigned long, void const*) (new_allocator.h:114)
+==1004==    by 0x11561E: std::allocator_traits<std::allocator<std::vector<double, std::allocator<double> > > >::allocate(std::allocator<std::vector<double, std::allocator<double> > >&, unsigned long) (alloc_traits.h:444)
+==1004==    by 0x113785: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x112E72: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x1108D6: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_Vector_base(unsigned long, std::allocator<std::vector<double, std::allocator<double> > > const&) (stl_vector.h:302)
+==1004==    by 0x121276: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::vector(unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F8BE: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== 
+==1004== 1 errors in context 2 of 12:
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x116EEB: __gnu_cxx::new_allocator<std::vector<double, std::allocator<double> > >::allocate(unsigned long, void const*) (new_allocator.h:104)
+==1004==    by 0x11561E: std::allocator_traits<std::allocator<std::vector<double, std::allocator<double> > > >::allocate(std::allocator<std::vector<double, std::allocator<double> > >&, unsigned long) (alloc_traits.h:444)
+==1004==    by 0x113785: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x112E72: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x1108D6: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_Vector_base(unsigned long, std::allocator<std::vector<double, std::allocator<double> > > const&) (stl_vector.h:302)
+==1004==    by 0x121276: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::vector(unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F8BE: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== 
+==1004== 1 errors in context 3 of 12:
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x113771: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x112E72: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x1108D6: std::_Vector_base<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_Vector_base(unsigned long, std::allocator<std::vector<double, std::allocator<double> > > const&) (stl_vector.h:302)
+==1004==    by 0x121276: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::vector(unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F8BE: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== 
+==1004== 1 errors in context 4 of 12:
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x12198C: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_S_check_init_len(unsigned long, std::allocator<std::vector<double, std::allocator<double> > > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x121261: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::vector(unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F8BE: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== 
+==1004== 1 errors in context 5 of 12:
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x483BE10: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1004==    by 0x116DDF: __gnu_cxx::new_allocator<double>::allocate(unsigned long, void const*) (new_allocator.h:114)
+==1004==    by 0x11546E: std::allocator_traits<std::allocator<double> >::allocate(std::allocator<double>&, unsigned long) (alloc_traits.h:444)
+==1004==    by 0x113513: std::_Vector_base<double, std::allocator<double> >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x113FC4: std::_Vector_base<double, std::allocator<double> >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x111E4C: std::_Vector_base<double, std::allocator<double> >::_Vector_base(unsigned long, std::allocator<double> const&) (stl_vector.h:302)
+==1004==    by 0x1211F2: std::vector<double, std::allocator<double> >::vector(unsigned long, std::allocator<double> const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F899: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== 
+==1004== 1 errors in context 6 of 12:
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x116DC9: __gnu_cxx::new_allocator<double>::allocate(unsigned long, void const*) (new_allocator.h:104)
+==1004==    by 0x11546E: std::allocator_traits<std::allocator<double> >::allocate(std::allocator<double>&, unsigned long) (alloc_traits.h:444)
+==1004==    by 0x113513: std::_Vector_base<double, std::allocator<double> >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x113FC4: std::_Vector_base<double, std::allocator<double> >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x111E4C: std::_Vector_base<double, std::allocator<double> >::_Vector_base(unsigned long, std::allocator<double> const&) (stl_vector.h:302)
+==1004==    by 0x1211F2: std::vector<double, std::allocator<double> >::vector(unsigned long, std::allocator<double> const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F899: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== 
+==1004== 1 errors in context 7 of 12:
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x1134FF: std::_Vector_base<double, std::allocator<double> >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1004==    by 0x113FC4: std::_Vector_base<double, std::allocator<double> >::_M_create_storage(unsigned long) (stl_vector.h:358)
+==1004==    by 0x111E4C: std::_Vector_base<double, std::allocator<double> >::_Vector_base(unsigned long, std::allocator<double> const&) (stl_vector.h:302)
+==1004==    by 0x1211F2: std::vector<double, std::allocator<double> >::vector(unsigned long, std::allocator<double> const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F899: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== 
+==1004== 1 errors in context 8 of 12:
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x1179FB: std::vector<double, std::allocator<double> >::_S_check_init_len(unsigned long, std::allocator<double> const&) (stl_vector.h:1766)
+==1004==    by 0x1211DD: std::vector<double, std::allocator<double> >::vector(unsigned long, std::allocator<double> const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F899: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== 
+==1004== 1 errors in context 9 of 12:
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x484358C: rawmemchr (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1004==    by 0x4C35F35: _IO_str_init_static_internal (strops.c:41)
+==1004==    by 0x4C054C2: _IO_strfile_read (strfile.h:95)
+==1004==    by 0x4C054C2: __isoc99_sscanf (isoc99_sscanf.c:28)
+==1004==    by 0x11F85A: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== 
+==1004== 1 errors in context 10 of 12:
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x11F811: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== 
+==1004== 32 errors in context 11 of 12:
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x124580: __gnu_cxx::__enable_if<std::__is_scalar<double>::__value, double*>::__type std::__fill_n_a<double*, unsigned long, double>(double*, unsigned long, double const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x1241C8: double* std::fill_n<double*, unsigned long, double>(double*, unsigned long, double const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x123A49: double* std::__uninitialized_default_n_1<true>::__uninit_default_n<double*, unsigned long>(double*, unsigned long) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x1234DE: double* std::__uninitialized_default_n<double*, unsigned long>(double*, unsigned long) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x122923: double* std::__uninitialized_default_n_a<double*, unsigned long, double>(double*, unsigned long, std::allocator<double>&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x121928: std::vector<double, std::allocator<double> >::_M_default_initialize(unsigned long) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x121205: std::vector<double, std::allocator<double> >::vector(unsigned long, std::allocator<double> const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F899: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== 
+==1004== 6292886 errors in context 12 of 12:
+==1004== Conditional jump or move depends on uninitialised value(s)
+==1004==    at 0x123A86: std::vector<double, std::allocator<double> >* std::__uninitialized_fill_n<false>::__uninit_fill_n<std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > >(std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x123513: std::vector<double, std::allocator<double> >* std::uninitialized_fill_n<std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > >(std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x122958: std::vector<double, std::allocator<double> >* std::__uninitialized_fill_n_a<std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> >, std::vector<double, std::allocator<double> > >(std::vector<double, std::allocator<double> >*, unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > >&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x1219F7: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::_M_fill_initialize(unsigned long, std::vector<double, std::allocator<double> > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x12128D: std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::vector(unsigned long, std::vector<double, std::allocator<double> > const&, std::allocator<std::vector<double, std::allocator<double> > > const&) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x11F8BE: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004==    by 0x10CDD3: main (main.cpp:304)
+==1004==  Uninitialised value was created by a stack allocation
+==1004==    at 0x11F767: FileManager::loadGridMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/c/Users/frodo/Documents/BYU/Grad/Robotics Class/Project/DynamicPF/dynamicpf)
+==1004== 
+==1004== ERROR SUMMARY: 6292928 errors from 12 contexts (suppressed: 0 from 0)
