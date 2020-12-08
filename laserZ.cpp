@@ -1,5 +1,8 @@
 #include "LaserZ.h"
+#include <cmath>
+#ifndef M_PI
 #define M_PI 3.14159265358979323846
+#endif
 
 LaserZ::LaserZ() {}
 
@@ -12,7 +15,7 @@ void LaserZ::setMeasurements(std::vector<double> z) {
 }
 
 double LaserZ::getMeasurement(int laser_index) {
-    return z[laser_index]
+    return z[laser_index];
 }
 
 std::vector<double> LaserZ::getMeasurements() {
@@ -28,7 +31,7 @@ double LaserZ::getLaserCount() {
 }
 
 void LaserZ::setLaserAngles(std::vector<double> angles) {
-    LaserZ::laser_angles = angles
+    LaserZ::laser_angles = angles;
 }
 
 int LaserZ::isInitialized() {

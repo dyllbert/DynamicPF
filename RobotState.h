@@ -1,3 +1,6 @@
+#ifndef ROBOT_STATE_H_
+#define ROBOT_STATE_H_
+
 using namespace std;
 
 class RobotState {
@@ -12,3 +15,5 @@ class RobotState {
         double y;
         double theta;
 };
+
+#endif

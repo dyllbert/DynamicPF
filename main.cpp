@@ -14,10 +14,14 @@
 #include <tuple>
 #include <vector>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 using namespace std;
 
 // Some constant values here that can be played with
-const int NUM_PARTICLES = 3;
+const int NUM_PARTICLES = 100;
 // Positional uncertainty
 const double sigma_pos[3] = {0.3, 0.3, 0.01};
 const int X_MIN = 0;
@@ -46,10 +50,13 @@ typedef struct cell {
 bool operator==(const cell lhs, const cell rhs) { return ((lhs.x == rhs.x) && (lhs.y == rhs.y)); }
 
 particle particleArray[NUM_PARTICLES];
+vector<RobotState> particleCapture; // Used to save the state of the particles every so often to be
+                                    // displayed in the simulation
 
-void init(DynamicOccupancyGridMap startingMap) {
+void init(tuple<double, double> xlim, tuple<double, double> ylim, vector<vector<double>> init_grid,
+          vector<vector<int>> st_mtx, double p_occ_from_free, double p_free_from_occ) {
     default_random_engine gen;
-
+    particleCapture.clear();
     for (int index = 0; index < NUM_PARTICLES; index++) {
 
         uniform_real_distribution<double> dist_x(X_MIN, X_MAX);
@@ -68,13 +75,17 @@ void init(DynamicOccupancyGridMap startingMap) {
         new_particle.y = sample_y;
         new_particle.theta = sample_theta;
         new_particle.weight = 0;
-        new_particle.map = startingMap;
+        new_particle.map = DynamicOccupancyGridMap(xlim, ylim, init_grid, st_mtx, p_occ_from_free,
+                                                   p_free_from_occ);
         particleArray[index] = new_particle;
+        RobotState rs(new_particle.x, new_particle.y, new_particle.theta);
+        particleCapture.push_back(rs);
     }
     is_initialized = true;
 }
 
 void TestInit() {
+    particleCapture.clear();
     for (int index = 0; index < NUM_PARTICLES; index++) {
         particle new_particle;
         new_particle.id = index;
@@ -83,6 +94,8 @@ void TestInit() {
         new_particle.theta = index;
         new_particle.weight = 1.0;
         particleArray[index] = new_particle;
+        RobotState rs(new_particle.x, new_particle.y, new_particle.theta);
+        particleCapture.push_back(rs);
     }
     is_initialized = true;
 }
@@ -141,6 +154,9 @@ void motionModel(double u[]) {
         particleArray[i].x = tempX;
         particleArray[i].y = tempY;
         particleArray[i].theta = angle;
+        particleCapture[i].x = particleArray[i].x;
+        particleCapture[i].y = particleArray[i].y;
+        particleCapture[i].theta = particleArray[i].theta;
     }
 }
 
@@ -164,9 +180,6 @@ void measModel(LaserZ z) {
 
     // For each particle:
     for (int i = 0; i < NUM_PARTICLES; i++) {
-        //update particles own map here?
-        particleArray[i].map.integrateLaserRangeRay();
-
         particle currParticle = particleArray[i];
 
         // for each laser to be checked as if it came from each particle
@@ -201,13 +214,16 @@ void measModel(LaserZ z) {
             passInParticle.x = currParticle.x;
             passInParticle.y = currParticle.y;
 
-            //update particles own map here?
-            particleArray[i].map.integrateLaserRangeRay(passInParticle, currLaserAngle, currLaserDist, MAX_LASER_RANGE);
+            // update particles own map here?
+            particleArray[i].map.integrateLaserRangeRay(passInParticle, currLaserAngle,
+                                                        currLaserDist, MAX_LASER_RANGE);
 
             double expectedRange =
                 currParticle.map.findExpectedRange(passInParticle, currLaserAngle, MAX_LASER_RANGE);
 
-            currParticle.weight += (LaserZ::laserRangeModel(currLaserDist, expectedRange) / 21.0); // Possible way to update weight. Probably Ok to just use addition, and not multiplication because we normalize.
+            currParticle.weight += (LaserZ::laserRangeModel(currLaserDist, expectedRange) /
+                                    21.0); // Possible way to update weight. Probably Ok to just use
+                                           // addition, and not multiplication because we normalize.
 
             /**
             // SD of sensor is 3
@@ -231,8 +247,6 @@ void measModel(LaserZ z) {
                 currParticle.weight += -3;
             }
             */
-
-            
 
         } // End of for each laser
 
@@ -395,7 +409,8 @@ int main(int argc, char *argv[]) {
     vector<vector<int>> raw_static_grid = loader.loadStaticMap("permanence.pmap");
     std::tuple<double, double> xlim((double)0.0, (double)rawgrid[0].size());
     std::tuple<double, double> ylim((double)0.0, (double)rawgrid.size());
-    DynamicOccupancyGridMap ogrid = DynamicOccupancyGridMap(xlim, ylim, rawgrid, raw_static_grid, 0.01, 0.05);
+    // DynamicOccupancyGridMap ogrid = DynamicOccupancyGridMap(xlim, ylim, rawgrid, raw_static_grid,
+    // 0.01, 0.05);
     // Load Controls and Measurements from experiment into memory
     loader.loadNumSteps("number_of_steps.data", &history);
     loader.loadSensorAngles("Angles.data");
@@ -405,10 +420,17 @@ int main(int argc, char *argv[]) {
     loader.loadNoisyControls("Controls_Noisy (1).data", &history);
     loader.loadState("State (1).data", &history);
     // Initialize Particle Filter -Dylan made this
-    init(ogrid);
-    // Setup Plotting - ?
+    init(xlim, ylim, rawgrid, raw_static_grid, 0.01, 0.05);
+    // Setup Plotting
+    uint32_t capture_period = history.getNumSteps() / 16;
     // Loop through the data stream
     for (std::uint32_t t = 0; t < history.getNumSteps(); t++) {
+        // Print particles
+        if (t % capture_period == 0) {
+            stringstream ss_fname;
+            ss_fname << "Particles_step" << t << "_" << t / capture_period << ".part";
+            loader.saveState(particleCapture, ss_fname.str());
+        }
         // Extract data (get measurement z and control u at this time step t)
         LaserZ z = history.getNoisyMeasurement(t);
         ControlU u = history.getNoisyControl(t);
@@ -424,22 +446,6 @@ int main(int argc, char *argv[]) {
         motionModel(uarg);
         measModel(z);
         resample();
-    
-        // measModel(z, dgrid);
-        // MAIN LOOP
-        /**
-         * for loop through each step of the robot
-         * {
-         *  motionModel //Pass in movement, apply movement to every partile. Needs u[]: distance
-         *moved and change in angle weigtingFunction****NEED TO FIGURE OUT //Figures out whiche
-         *particles are garbage and weights them.  Needs laser data[], angles[], and map resample
-         * //Resmaples based on weight, higher = more likely to move on/propegate
-         * }
-         * /
-         **/
-
-        // Use extended sensor model for mapping problem
-        // Plot
     }
     return 0;
 }

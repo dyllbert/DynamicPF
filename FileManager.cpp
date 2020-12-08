@@ -1,6 +1,7 @@
 #include "FileManager.h"
 #include <fstream>
 #include <stdio.h>
+#include <string.h>
 #include "LaserZ.h"
 #include "ControlU.h"
 
@@ -212,6 +213,7 @@ void FileManager::loadSensorAngles(std::string filename) {
 
 bool saveState(vector<RobotState> state_snapshot, std::string filename) {
     std::ofstream f(filename, std::ios::out | std::ios::binary);
+    if (!f) {return false;}
     for (std::uint32_t i = 0; i < state_snapshot.size(); i++) {
         RobotState x = state_snapshot[i];
         char bytes[sizeof(double) * 3];
@@ -221,4 +223,5 @@ bool saveState(vector<RobotState> state_snapshot, std::string filename) {
         f.write(bytes, sizeof(x.x) + sizeof(x.y) + sizeof(x.theta));
     }
     f.close();
+    return true;
 }
