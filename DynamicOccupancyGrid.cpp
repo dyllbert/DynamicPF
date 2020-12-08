@@ -1,4 +1,6 @@
 #include "DynamicOccupancyGrid.h"
+#include <string>
+#include <iostream>
 
 DynamicOccupancyGrid::DynamicOccupancyGrid() {
 }
@@ -32,9 +34,17 @@ DynamicOccupancyGrid::DynamicOccupancyGrid(tuple<double,double> xlim, tuple<doub
                 throw invalid_argument("Each cell in the initial grid must contain a probability between 0 and 1");
             }
             if (cell == 1) {
-                log_grid[i].push_back(10);
+                if (log_grid[i][j] == 0) {
+                    log_grid[i].push_back(2.2);
+                } else {
+                    log_grid[i].push_back(10);
+                }
             } else if (cell == 0) {
-                log_grid[i].push_back(-10);
+                if (log_grid[i][j] == 0) {
+                    log_grid[i].push_back(-2.2);
+                } else {
+                    log_grid[i].push_back(-10);
+                }
             } else {
                 log_grid[i].push_back(log(cell/(1-cell)));
             }
@@ -50,7 +60,9 @@ DynamicOccupancyGrid::DynamicOccupancyGrid(tuple<double,double> xlim, tuple<doub
     this->prior_lg_odd = log(prior/(1-prior));
     this->st_mtx = st_mtx;
     this->p_occ_from_free = p_occ_from_free;
+    this->p_free_from_occ = p_free_from_occ;
     this->p_occ_from_occ = 1-p_free_from_occ;
+    this->p_free_from_free = 1 - p_occ_from_free;
 
     for(int i = 0; i <= xdim; i++) {
         this->xcoords.push_back(get<0>(xlim) + i*resolution_x);
@@ -105,6 +117,29 @@ void DynamicOccupancyGrid::updateCellWithMeasLogodds(tuple<int,int> index, doubl
     this->grid[get<1>(index)][get<0>(index)] -= this->prior_lg_odd;
 }
 
+void DynamicOccupancyGrid::updateDynamicCells() {
+    /*
+    Updates cells that are dynamic given the probaility that they are to change
+   */
+    double p_sum;
+    double l_sum; //log odds
+    double p_recurs; // recursive probability
+    for (int i = 0; i < this->grid.size(); i++) {
+        for (int j = 0; j < this->grid[i].size(); j++) {
+            if (this->st_mtx[i][j] == 0) { //If dynamic
+                p_recurs = 1-1/(1+exp(this->grid[i][j]));
+                if (p_recurs < 0.5) { //if probably free in the previous time step
+                    p_sum = p_occ_from_occ + p_occ_from_free*p_recurs - p_occ_from_occ*p_recurs;
+                } else { //if probably occupied in the previous time step
+                    p_sum = p_occ_from_free + p_occ_from_occ*p_recurs - p_occ_from_free*p_recurs;
+                }
+                l_sum = log(p_sum/(1-p_sum));
+                this->grid[i][j] = l_sum;
+            }
+        }
+    }
+}
+
 void DynamicOccupancyGrid::plotGrid() {
     /*plots the grid to the screen. May require we download a plotting library, such as
     https://github.com/lava/matplotlib-cpp.git*/
@@ -119,7 +154,7 @@ void DynamicOccupancyGrid::exportGrid(string outfilename) {
         imagesc(occ_map.');
     */
     double grid_prob;
-    cout << "exporting grid map to " << outfilename << "\n";
+    cout << "exporting grid map to " + outfilename << "\n";
     ofstream exportFile(outfilename);
     for(int i = 0; i < this->grid[0].size();++i) {
         for(int j = 0; j < this->grid.size();++j) {

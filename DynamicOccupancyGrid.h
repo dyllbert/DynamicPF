@@ -33,8 +33,10 @@ class DynamicOccupancyGrid {
         double prior_lg_odd;
 
         //Stuff specific to dynamic
-        vector<vector<int>> st_mtx; //matrix indicating whether each cell is static or not 
+        vector<vector<int>> st_mtx; //matrix indicating whether each cell is static (1) or not (0)
         double p_occ_from_free;
+        double p_free_from_occ;
         double p_occ_from_occ;
+        double p_free_from_free;
         void updateDynamicCells();
 };

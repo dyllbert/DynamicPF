@@ -125,7 +125,7 @@ void printAllParticles()
 
 double toRadians(int degree)
 {
-    return degree * M_PI / 180;
+    //return degree * M_PI / 180;
 }
 
 double constrainAngle(double x)
