@@ -19,12 +19,12 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#define PRINT_OUT_OGRID 1
+#define PRINT_OUT_OGRID 0
 
 using namespace std;
 
 // Some constant values here that can be played with
-const int NUM_PARTICLES = 100;
+const int NUM_PARTICLES = 10;
 // Positional uncertainty
 const double sigma_pos[3] = {0.3, 0.3, 0.01};
 const int X_MIN = 0;
@@ -363,16 +363,19 @@ int main()
     std::cout << "Beginning Loop\n";
     for (std::uint32_t t = 0; t < history.getNumSteps(); t++)
     {
+        cout << "T is: " + to_string(t) << endl;
         // Print particles
-        if (t % capture_period == 0)
-        {
-            stringstream ss_fname;
-            ss_fname << "Particles_step" << t << "_" << t / capture_period << ".part";
-            // loader.saveState(particleCapture, ss_fname.str());
-            cout << "Saving to " << ss_fname.str();
-        }
+        // if (t % capture_period == 0)
+        // {
+        //     stringstream ss_fname;
+        //     ss_fname << "Particles_step" << t << "_" << t / capture_period << ".part";
+        //     // loader.saveState(particleCapture, ss_fname.str());
+        //     cout << "Saving to " << ss_fname.str();
+        // }
         // Extract data (get measurement z and control u at this time step t)
+        cout << "Getting z" << endl;
         LaserZ z = history.getNoisyMeasurement(t);
+        cout << "Getting u" << endl;
         ControlU u = history.getNoisyControl(t);
         // RobotState x_true = history.getState(t);   // This is the true value of the state. We can use the initial
                                                    // value, but nothing else, unless it's for testing.
@@ -382,8 +385,11 @@ int main()
                                                    // value of the controls. Just for testing.
         // Operate on data to run particle filter algorithm -
         double uarg[2] = {u.getDDist(), u.getDTheta()};
+        cout << "Entering motion model" << endl;
         motionModel(uarg);
+        cout << "Entering meas model" << endl;
         measModel(z);
+        cout << "Entering reseample" << endl;
         resample();
     }
     return 0;

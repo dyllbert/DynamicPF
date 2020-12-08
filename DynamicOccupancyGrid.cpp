@@ -24,7 +24,7 @@ DynamicOccupancyGrid::DynamicOccupancyGrid(tuple<double,double> xlim, tuple<doub
     double prior = 0.5;
 
     double cell;
-    vector<vector<double>> log_grid;
+    vector<vector<double>> log_grid; 
     for (int i = 0; i < init_grid.size(); i++) {
         vector<double> temp;
         log_grid.push_back(temp);
@@ -34,13 +34,13 @@ DynamicOccupancyGrid::DynamicOccupancyGrid(tuple<double,double> xlim, tuple<doub
                 throw invalid_argument("Each cell in the initial grid must contain a probability between 0 and 1");
             }
             if (cell == 1) {
-                if (log_grid[i][j] == 0) {
+                if (st_mtx[i][j] == 0) {
                     log_grid[i].push_back(2.2);
                 } else {
                     log_grid[i].push_back(10);
                 }
             } else if (cell == 0) {
-                if (log_grid[i][j] == 0) {
+                if (st_mtx[i][j] == 0) {
                     log_grid[i].push_back(-2.2);
                 } else {
                     log_grid[i].push_back(-10);
