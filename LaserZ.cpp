@@ -4,7 +4,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-static std::vector<double> laser_angles;
+static std::vector<double> laser_angles(21);
 
 LaserZ::LaserZ() {}
 
