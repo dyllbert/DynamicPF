@@ -330,8 +330,8 @@ int main()
     std::cout << "Loading Static/Dynamic Map\n";
     vector<vector<int>> raw_static_grid = loader.loadStaticMap("permanence.pmap");
     std::cout << "Loading Number of steps\n";
-    std::tuple<double, double> xlim((double)0.0, (double)rawgrid[0].size());
-    std::tuple<double, double> ylim((double)0.0, (double)rawgrid.size());
+    std::tuple<double, double> xlim((double)0.0, 1024);//(double)rawgrid[0].size());
+    std::tuple<double, double> ylim((double)0.0, 768);//(double)rawgrid.size());
     // DynamicOccupancyGridMap ogrid = DynamicOccupancyGridMap(xlim, ylim, rawgrid, raw_static_grid,
     // 0.01, 0.05);
     // Load Controls and Measurements from experiment into memory
