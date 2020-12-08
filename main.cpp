@@ -19,6 +19,8 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+#define PRINT_OUT_OGRID 0
+
 using namespace std;
 
 // Some constant values here that can be played with
@@ -304,6 +306,22 @@ int main()
     vector<vector<double>> rawgrid =
         loader.loadGridMap("occupancy_grid.omap"); // This is the prior map before boxes were moved
                                                    // and the current experiment was ran
+    #if PRINT_OUT_OGRID
+    stringstream ss_omap;
+    for (uint32_t j = 0; j < rawgrid.size(); j++) {
+        ss_omap << "|";
+        for (uint32_t i = 0; i < rawgrid.size(); i++) {
+            if (rawgrid[j][i] <= 0.5) {
+                ss_omap << " ";
+            }
+            else {
+                ss_omap << ".";
+            }
+        }
+        ss_omap << "|\n";
+    }
+    std::cout << ss_omap.str();
+    #endif
     std::cout << "Loading Static/Dynamic Map\n";
     vector<vector<int>> raw_static_grid = loader.loadStaticMap("permanence.pmap");
     std::cout << "Loading Number of steps\n";
