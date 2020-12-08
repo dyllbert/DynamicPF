@@ -27,6 +27,7 @@ const int Y_MIN = 0;
 const int Y_MAX = 100;
 const int T_MIN = 0;
 const int T_MAX = 359;
+const double MAX_LASER_RANGE = 128;
 bool is_initialized = false;
 
 typedef struct particle
@@ -163,6 +164,14 @@ void motionModel(double u[])
     }
 }
 
+cell tupleToCell(tuple<double, double> convert)
+{
+    cell toReturn;
+    toReturn.x = get<0>(convert);
+    toReturn.y = get<1>(convert);
+    return toReturn;
+}
+
 void measModel(LaserZ z, OccupancyGrid *ogrid)
 {
     /**
@@ -194,13 +203,28 @@ void measModel(LaserZ z, OccupancyGrid *ogrid)
             //break the measred distance down into x and y parts
             double xComponent = currLaserDist * cos(currWorkingAngle);
             double yComponent = currLaserDist * sin(currWorkingAngle);
-            
+
             //add the components to the current x and y position to get the endpoint
             double xEnd = currParticle.x + xComponent;
             double yEnd = currParticle.y + yComponent;
 
-        }
-    }
+            //First need only the end cell
+            cell endCell = tupleToCell(ogrid->getCellIndex(xEnd,yEnd));
+
+            //Detirmine our expected value for the end cell
+            //We expect to hit something, but if we don't it means we reached the end of the range od the laser
+            bool expectedEndIsClear = false;
+            if (currLaserDist == MAX_LASER_RANGE)
+                expectedEndIsClear = true;
+
+            //How access the map?**************************************
+            //If end is 
+
+            
+
+        } // End of for each laser
+
+    } // End of for each particle
 }
 
 /**
