@@ -4,6 +4,7 @@
 #include "RobotState.h"
 #include <algorithm>
 #include <cmath>
+#include <cstdio>
 #include <iostream>
 #include <iterator>
 #include <math.h>

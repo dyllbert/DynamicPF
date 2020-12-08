@@ -1,6 +1,6 @@
-# CC = g++
+CC = g++
 
-# CFLAGS = -wall -g
+CFLAGS = -Wall -Wextra -Werror -g 
 
 # src = $(wildcard *.cpp)
 # obj = $(patsubst %.cpp,%.o,$(SOURCES))
