@@ -4,3 +4,4 @@
 testDylan.cpp
 *.o
 dynamicpf
+ogrid_ascii.txt

@@ -307,25 +307,30 @@ int main()
         loader.loadGridMap("occupancy_grid.omap"); // This is the prior map before boxes were moved
                                                    // and the current experiment was ran
     #if PRINT_OUT_OGRID
+    int print_to_file = 0;
     stringstream ss_omap;
+    ofstream ogrid_ascii("ogrid_ascii.txt", ios::out);
+    if (ogrid_ascii) {
+        print_to_file = 1;
+    }
     for (uint32_t j = 0; j < rawgrid.size(); j++) {
         ss_omap << "|";
+        if (print_to_file) {ogrid_ascii << "|";}
         for (uint32_t i = 0; i < rawgrid.size(); i++) {
             if (rawgrid[j][i] <= 0.5) {
                 ss_omap << " ";
+                if (print_to_file) {ogrid_ascii << " ";}
             }
             else {
                 ss_omap << ".";
+                if (print_to_file) {ogrid_ascii << ".";}
             }
         }
         ss_omap << "|\r\n";
-    }
-    std::cout << ss_omap.str();
-    ofstream ogrid_ascii("ogrid_ascii.txt", ios::out);
-    if (ogrid_ascii) {
-        ogrid_ascii << ss_omap.str();
+        if (print_to_file) {ogrid_ascii << "|\r\n";}
     }
     ogrid_ascii.close();
+    std::cout << ss_omap.str();
     #endif
     std::cout << "Loading Static/Dynamic Map\n";
     vector<vector<int>> raw_static_grid = loader.loadStaticMap("permanence.pmap");
