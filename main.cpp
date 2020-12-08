@@ -321,6 +321,11 @@ int main()
         ss_omap << "|\n";
     }
     std::cout << ss_omap.str();
+    ofstream ogrid_ascii("ogrid_ascii.txt", ios::out);
+    if (ogrid_ascii) {
+        ogrid_ascii << ss_omap.str();
+    }
+    ogrid_ascii.close();
     #endif
     std::cout << "Loading Static/Dynamic Map\n";
     vector<vector<int>> raw_static_grid = loader.loadStaticMap("permanence.pmap");
