@@ -4,10 +4,13 @@
 #include <string.h>
 #include "LaserZ.h"
 #include "ControlU.h"
+#include <cstdio>
+#include <iostream>
 
 std::vector<std::vector<double>> FileManager::loadGridMap(std::string fileName) {
     // Open file for gridmap
     std::ifstream f(fileName, std::ios::in | std::ios::binary);
+    if (!f) {std::cout << "ERROR: Unable to open grid map file.\n";}
     // Extract header string that defines gridmap size
     char buffer[200];
     int done_extracting_header = 0;
@@ -45,6 +48,7 @@ std::vector<std::vector<double>> FileManager::loadGridMap(std::string fileName) 
 std::vector<std::vector<int>> FileManager::loadStaticMap(std::string fileName) {
     // Open file for gridmap
     std::ifstream f(fileName, std::ios::in | std::ios::binary);
+    if (!f) {std::cout << "ERROR: Unable to open static/dynamic map file.\n";}
     // Extract header string that defines gridmap size
     char buffer[200];
     int done_extracting_header = 0;
@@ -76,10 +80,11 @@ std::vector<std::vector<int>> FileManager::loadStaticMap(std::string fileName) {
 
 std::uint32_t FileManager::loadNumSteps(std::string filename, History *history) {
     // Load number of steps from file
-    std::ifstream f_steps(filename, std::ios::in);
+    std::ifstream f(filename, std::ios::in);
+    if (!f) {std::cout << "ERROR: Unable to open num_steps file.\n";}
     std::uint32_t num_steps = 0;
-    f_steps >> num_steps;
-    f_steps.close();
+    f >> num_steps;
+    f.close();
     history->setNumSteps(num_steps);
     return num_steps;
 }
@@ -95,18 +100,19 @@ void FileManager::loadMeasurements(std::string filename, History *history) {
     std::uint32_t num_steps = history->getNumSteps();
     // Read measurement file for correct number of steps
     std::vector<LaserZ> measurements;
-    std::ifstream f_meas(filename, std::ios::in | std::ios::binary);
+    std::ifstream f(filename, std::ios::in | std::ios::binary);
+    if (!f) {std::cout << "ERROR: Unable to open measurements file.\n";}
     for (std::uint32_t i = 0; i < num_steps; i++) {
         std::vector<double> meas(LaserZ::getLaserCount(), 0.0);
         for (std::uint16_t j = 0; j < LaserZ::getLaserCount(); j++) {
             std::uint16_t measurement;
-            f_meas.read(reinterpret_cast<char *>(&measurement), sizeof(measurement));
+            f.read(reinterpret_cast<char *>(&measurement), sizeof(measurement));
             meas[j] = (double) measurement;
         }
         LaserZ z(meas);
         measurements.push_back(z);
     }
-    f_meas.close();
+    f.close();
     history->setMeasurementHistory(measurements);
 }
 
@@ -119,9 +125,11 @@ void FileManager::loadNoisyMeasurements(std::string filename, History *history) 
     }
     // Load number of steps from file
     std::uint32_t num_steps = history->getNumSteps();
+    std::cout << "About to load " << num_steps << " from the save file.\n";
     // Read measurement file for correct number of steps
     std::vector<LaserZ> measurements;
     std::ifstream f(filename, std::ios::in | std::ios::binary);
+    if (!f) {std::cout << "ERROR: Unable to open noisy measurements file.\n";}
     for (std::uint32_t i = 0; i < num_steps; i++) {
         std::vector<double> meas;//(LaserZ::getLaserCount(), 0.0);
         for (std::uint16_t j = 0; j < LaserZ::getLaserCount(); j++) {
@@ -143,6 +151,7 @@ void FileManager::loadControls(std::string filename, History *history) {
     std::uint32_t num_steps = history->getNumSteps();
     std::vector<ControlU> controls;
     std::ifstream f(filename, std::ios::in | std::ios::binary);
+    if (!f) {std::cout << "ERROR: Unable to open controls file.\n";}
     for (std::uint32_t i = 0; i < num_steps; i++) {
         char ddist;
         char dtheta;
@@ -162,6 +171,7 @@ void FileManager::loadNoisyControls(std::string filename, History *history) {
     std::uint32_t num_steps = history->getNumSteps();
     std::vector<ControlU> controls;
     std::ifstream f(filename, std::ios::in | std::ios::binary);
+    if (!f) {std::cout << "ERROR: Unable to open noisy controls file.\n";}
     for (std::uint32_t i = 0; i < num_steps; i++) {
         float ddist;
         float dtheta;
@@ -181,6 +191,7 @@ void FileManager::loadState(std::string filename, History *history) {
     std::uint32_t num_steps = history->getNumSteps();
     std::vector<RobotState> states;
     std::ifstream f(filename, std::ios::in | std::ios::binary);
+    if (!f) {std::cout << "ERROR: Unable to open state file.\n";}
     for (std::uint32_t i = 0; i < num_steps; i++) {
         std::uint32_t x;
         std::uint32_t y;
@@ -199,6 +210,7 @@ void FileManager::loadSensorAngles(std::string filename) {
     std::vector<double> laser_angles;
     std::uint16_t angle;
     ifstream f(filename, std::ios::in | std::ios::binary);
+    if (!f) {std::cout << "ERROR: Unable to open angles file.\n";}
     // f.seekg(std::ios::end);
     // std::uint64_t num_angles = ((std::uint64_t) f.tellg()) / 2;
     // f.seekg(ifstream::beg);
@@ -214,6 +226,7 @@ void FileManager::loadSensorAngles(std::string filename) {
 
 bool saveState(vector<RobotState> state_snapshot, std::string filename) {
     std::ofstream f(filename, std::ios::out | std::ios::binary);
+    if (!f) {std::cout << "ERROR: Unable to open state file.\n";}
     if (!f) {return false;}
     for (std::uint32_t i = 0; i < state_snapshot.size(); i++) {
         RobotState x = state_snapshot[i];
