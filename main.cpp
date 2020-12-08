@@ -1,4 +1,4 @@
-#include "FileLoader.h"
+#include "FileManager.h"
 #include "RobotState.h"
 #include "History.h"
 #include "DynamicOccupancyGridMap.h"
@@ -331,16 +331,19 @@ int main(int argc, char *argv[])
 {
     // Load Prior Occupancy Grid into memory
     History history;
-    FileLoader loader;
+    FileManager loader;
     vector<vector<double>> rawgrid = loader.loadGridMap("occupancy_grid.omap"); // This is the prior map before boxes were moved and the current experiment was ran
-    OccupancyGrid ogrid = OccupancyGrid((std::tuple<double, double>){0, rawgrid[0].size()}, (std::tuple<double><double>){0, rawgrid.size()}, rawgrid);
+    std::tuple<double,double> xlim((double)0.0, (double)rawgrid[0].size());
+    std::tuple<double,double> ylim((double)0.0, (double) rawgrid.size());
+    OccupancyGrid ogrid = OccupancyGrid(xlim, ylim, rawgrid);
     // Load Controls and Measurements from experiment into memory
+    loader.loadNumSteps("number_of_steps.data", &history);
     loader.loadSensorAngles("Angles.data");
-    loader.loadMeasurements("Measurements (1).data", "number_of_steps.data", &history);
-    loader.loadNoisyMeasurements("Measurements_Noisy (1).data", "number_of_steps.data", &history);
-    loader.loadControls("Controls (1).data", "number_of_steps.data", &history);
-    loader.loadNoisyControls("Controls_Noisy (1).data", "number_of_steps.data", &history);
-    loader.loadState("State (1).data", "number_of_steps.data", &history);
+    loader.loadMeasurements("Measurements (1).data", &history);
+    loader.loadNoisyMeasurements("Measurements_Noisy (1).data", &history);
+    loader.loadControls("Controls (1).data", &history);
+    loader.loadNoisyControls("Controls_Noisy (1).data", &history);
+    loader.loadState("State (1).data", &history);
     // Initialize Particle Filter -Dylan made this
     init();
     // Setup Plotting - ?
@@ -348,13 +351,15 @@ int main(int argc, char *argv[])
     for (std::uint32_t t = 0; t < history.getNumSteps(); t++)
     {
         // Extract data (get measurement z and control u at this time step t)
-        LaserZ z = history->getNoisyMeasurement(t);
-        ControlU u = history->getNoisyControl(t);
-        RobotState x_true = history->getState(t);   // Do not use in PF Algorithm - This is the true value of the state. Just for testing.
-        LaserZ z_true = history->getMeasurement(t); // Do not use in PF Algorithm - This is the true value of the measurements. Just for testing.
-        ControlU u_true = history->getControl(t);   // Do not use in PF Algorithm - This is the true value of the controls. Just for testing.
+        LaserZ z = history.getNoisyMeasurement(t);
+        ControlU u = history.getNoisyControl(t);
+        RobotState x_true = history.getState(t);   // This is the true value of the state. We can use the initial value, but nothing else, unless it's for testing.
+        LaserZ z_true = history.getMeasurement(t); // Do not use in PF Algorithm - This is the true value of the measurements. Just for testing.
+        ControlU u_true = history.getControl(t);   // Do not use in PF Algorithm - This is the true value of the controls. Just for testing.
         // Operate on data to run particle filter algorithm -
-        motionModel((double[2]){u.getDDist(), u.getDTheta()});
+        double uarg[2] = {u.getDDist(), u.getDTheta()};
+        motionModel(uarg);
+        // measModel(z, dgrid);
         //MAIN LOOP
         /**
          * for loop through each step of the robot
@@ -364,7 +369,7 @@ int main(int argc, char *argv[])
          *  resample //Resmaples based on weight, higher = more likely to move on/propegate
          * }
          * /
-
+         **/
 
         // Use extended sensor model for mapping problem
         // Plot
