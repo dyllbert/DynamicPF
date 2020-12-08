@@ -2,6 +2,7 @@
 #include <fstream>
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
 #include "LaserZ.h"
 #include "ControlU.h"
 #include <cstdio>
