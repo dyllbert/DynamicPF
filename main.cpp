@@ -271,98 +271,7 @@ void measModel(LaserZ z) {
     }
 }
 
-/**
-void measModel(double laserData[], double angles[], MAP priorMap) //TODO This needs to get the map
-figured out
-{
-    double allWeights[NUM_PARTICLES] = {};
 
-    for (int i = 0; i < NUM_PARTICLES; i++)
-    {
-        double particleX = particleArray[i].x;
-        double particleY = particleArray[i].y;
-        double particleT = particleArray[y].theta;
-        double pos[3] = {particleX, particleY, particleT};
-
-        vector<double> particleDistances; //This will hold the weird weighting system I use????
-
-        for (int u = 0; u < sizeof(laserData); u++)
-        {
-            double xEnd = laserData[u] * cos(toRadians(pos[2] + angles[u])) + pos[0];
-            double yEnd = laserData[u] * sin(toRadians(pos[2] + angles[u])) + pos[1];
-
-            double rayAngle = angles[u] + pos[2];
-            //how big of steps along the data to make
-            double step = 1;
-            double numSteps = int(laserData[u] / step);
-            vector<cell> cellIndexList;
-
-            for (int r = 0; r < numSteps; r++)
-            {
-                double lan = r / numSteps;
-                double x = pos[0] + (xEnd - pos[0]) * lan;
-                double y = pos[1] + (yEnd - pos[1]) * lan;
-
-                if (x > X_MAX)
-                    x = X_MAX;
-                if (x < X_MIN)
-                    x = X_MIN;
-                if (y > Y_MAX)
-                    y = Y_MAX;
-                if (y < Y_MIN)
-                    y = Y_MIN;
-
-                cell index; //FIX THIS WITH AN ACTUAL GET CELL INDEX FUNCTION??????????
-                index.x = floor(x);
-                index.y = floor(y);
-                bool found = false;
-                for (int m = 0; m < cellIndexList.size(); m++)
-                {
-                    if (cellIndexList[m] == index)
-                    {
-                        found = true;
-                    }
-                }
-                if (!found)
-                    cellIndexList.push_back(index);
-            }
-
-            //NEED TO ASSIGNE PARTICLES WEIGHTS
-        }
-    }
-}
-
-
-  //Sensor error is sd of 3
-            if (abs(expectedRange - currLaserDist) < 1)
-            {
-                //Good match, add weight
-                //add 3
-                currParticle.weight += 3;
-            }
-            else if (abs(expectedRange - currLaserDist) < 3)
-            {
-                //maybe match, add tiny weight
-                // add 1
-                currParticle.weight += 1;
-            }
-            else if (abs(expectedRange - currLaserDist) < 5)
-            {
-                //neutral match, do not change
-            }
-            else if (abs(expectedRange - currLaserDist) < 8)
-            {
-                //tiny bad match, take away tiny weight
-                //-1
-                currParticle.weight += -1;
-            }
-            else
-            {
-                //big bad match, take away big weight
-                //-3
-                currParticle.weight += -3;
-            }
-*/
 
 void resample() {
     // copy the existing list of particles
@@ -430,7 +339,8 @@ int main(int argc, char *argv[]) {
         if (t % capture_period == 0) {
             stringstream ss_fname;
             ss_fname << "Particles_step" << t << "_" << t / capture_period << ".part";
-            loader.saveState(particleCapture, ss_fname.str());
+            // loader.saveState(particleCapture, ss_fname.str());
+            cout << "Saving to " << ss_fname.str();
         }
         // Extract data (get measurement z and control u at this time step t)
         LaserZ z = history.getNoisyMeasurement(t);
