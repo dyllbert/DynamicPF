@@ -151,7 +151,7 @@ cell tupleToCell(tuple<double, double> convert) {
     return toReturn;
 }
 
-void measModel(LaserZ z, DynamicOccupancyGridMap *ogrid) {
+void measModel(LaserZ z) {
 
     /**
      * New way to get the weights:
@@ -404,7 +404,7 @@ int main(int argc, char *argv[]) {
     loader.loadControls("Controls (1).data", &history);
     loader.loadNoisyControls("Controls_Noisy (1).data", &history);
     loader.loadState("State (1).data", &history);
-    // Initialize Particle Filter
+    // Initialize Particle Filter -Dylan made this
     init(ogrid);
     // Setup Plotting - ?
     // Loop through the data stream
@@ -422,7 +422,7 @@ int main(int argc, char *argv[]) {
         // Operate on data to run particle filter algorithm -
         double uarg[2] = {u.getDDist(), u.getDTheta()};
         motionModel(uarg);
-        measModel(z, ogrid);
+        measModel(z);
         resample();
     
         // measModel(z, dgrid);
