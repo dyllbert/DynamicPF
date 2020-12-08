@@ -336,8 +336,8 @@ int main()
     // 0.01, 0.05);
     // Load Controls and Measurements from experiment into memory
     loader.loadNumSteps("number_of_steps.data", &history);
-    std::cout << "Loading Angles\n";
-    loader.loadSensorAngles("Angles.data");
+    std::cout << "Hard Coded Sensor Angles\n";
+    //loader.loadSensorAngles("Angles.data");
     std::cout << "Loading Z\n";
     loader.loadMeasurements("Measurements (1).data", &history);
     std::cout << "Loading Z noisy\n";
