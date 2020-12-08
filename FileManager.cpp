@@ -126,19 +126,28 @@ void FileManager::loadNoisyMeasurements(std::string filename, History *history) 
     }
     // Load number of steps from file
     std::uint32_t num_steps = history->getNumSteps();
-    std::cout << "About to load " << num_steps << " from the save file.\n";
+    std::cout << "FileManager: About to load " << num_steps << " noisy measurements from storage.\n";
     // Read measurement file for correct number of steps
     std::vector<LaserZ> measurements;
     std::ifstream f(filename, std::ios::in | std::ios::binary);
     if (!f) {std::cout << "ERROR: Unable to open noisy measurements file.\n";}
+    else {std::cout << "Successfully opened " << filename << "\n";}
     for (std::uint32_t i = 0; i < num_steps; i++) {
         std::vector<double> meas;//(LaserZ::getLaserCount(), 0.0);
         for (std::uint16_t j = 0; j < LaserZ::getLaserCount(); j++) {
             float measurement;
-            f.read(reinterpret_cast<char *>(&measurement), sizeof(measurement));
-            meas.push_back((double) measurement); //[j] = (double) measurement;
+            try {
+                f.read(reinterpret_cast<char *>(&measurement), sizeof(measurement));
+                meas.push_back((double) measurement); //[j] = (double) measurement;
+            }
+            catch (exception e) {
+                std::cout << "ERROR: Could not read value for z#" << i << ", laser#" << j << "\n";
+            }
         }
         LaserZ z(meas);
+        if (z.getMeasurements().size() != 21) {
+            std::cout << "ERROR: Initialization of z did not preserve values!\n";
+        }
         measurements.push_back(z);
     }
     f.close();
