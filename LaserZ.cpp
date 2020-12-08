@@ -4,7 +4,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-std::vector<double> laser_angles(21);
+double LaserZ::laser_angles[21] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}
 
 LaserZ::LaserZ() {}
 
@@ -33,13 +33,22 @@ double LaserZ::getLaserCount() {
 }
 
 void LaserZ::setLaserAngles(std::vector<double> angles) {
-    LaserZ::laser_angles = angles;
+    // LaserZ::laser_angles = angles;
+    for (int i = 0; i < 21; i++) {
+        laser_angles[i] = angles[i];
+    }
+    for (int i = 0; i < 21; i++) {
+        laser_angles[i] = angles[i];
+    }
+    for (int i = 0; i < 21; i++) {
+        laser_angles[i] = angles[i];
+    }
 }
 
 int LaserZ::isInitialized() {
-    if (laser_angles.size() == 0) {
-        return 0;
-    }
+    // if (laser_angles.size() == 0) {
+    //     return 0;
+    // }
     return 1;
 }
 

@@ -9,7 +9,8 @@ class LaserZ {
     private:
         std::vector<double> z;
     public:
-        static std::vector<double> laser_angles;
+        // static std::vector<double> laser_angles;
+        static double laser_angles[21];
         LaserZ();
         LaserZ(std::vector<double> z);
         void setMeasurements(std::vector<double> z);
