@@ -22,6 +22,11 @@ class History {
         void setNoisyMeasurementHistory(std::vector<LaserZ> noisy_measurements);
         void setRobotStates(std::vector<RobotState> states);
         void setNumSteps(std::uint32_t steps);
+        std::vector<ControlU> getControlHistory();
+        std::vector<ControlU> getNoisyControlHistory();
+        std::vector<LaserZ> getMeasurementHistory();
+        std::vector<LaserZ> getNoisyMeasurementHistory();
+        std::vector<RobotState> getRobotStates();
         ControlU getControl(std::uint32_t t);
         LaserZ getMeasurement(std::uint32_t t);
         ControlU getNoisyControl(std::uint32_t t);

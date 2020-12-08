@@ -344,13 +344,18 @@ int main()
     loader.loadNoisyMeasurements("Measurements_Noisy (1).data", &history);
 #if PRINT_OUT_NOISY_MEASUREMENTS
     ofstream f_znoisy("noisy_z_ascii.txt", ios::out);
-    if (f_znoisy)
-    {
+    if (history.getNumSteps() != history.getNoisyMeasurementHistory().size()) {
+        cout << "Wrong number of measurements! (" << history.getNoisyMeasurementHistory().size() << "). Should be " << history.getNumSteps() << "\n";
+    }
+    if (f_znoisy) {
         cout << "About to loop through " << history.getNumSteps() << " steps.\n";
         for (uint32_t i = 0; i < history.getNumSteps(); i++)
         {
             cout << i << endl;
             LaserZ print_z = history.getNoisyMeasurement(i);
+            if (print_z.getMeasurements().size() != 21) {
+                cout << "ERROR: Z only has " << print_z.getMeasurements().size() << " lasers!\n";
+            }
             cout << "[" << i << "] About to loop through " << LaserZ::getLaserCount() << " lasers.\n";
             for (uint32_t j = 0; j < LaserZ::getLaserCount(); j++)
             {
@@ -376,7 +381,7 @@ int main()
     init(xlim, ylim, rawgrid, raw_static_grid, 0.01, 0.05);
     // Setup Plotting
     std::cout << "Setup Plotting\n";
-    uint32_t capture_period = history.getNumSteps() / 16;
+    // uint32_t capture_period = history.getNumSteps() / 16;
     // Loop through the data stream
     std::cout << "Beginning Loop\n";
     for (std::uint32_t t = 0; t < history.getNumSteps(); t++)
