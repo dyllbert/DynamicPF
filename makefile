@@ -1,23 +1,38 @@
-# SOURCES := $(wildcard *.cpp)
-# OBJECTS := $(patsubst %.cpp,%.o,$(SOURCES))
-# CXX := g++ -Wall -Wvla -g
+# CC = g++
+
+# CFLAGS = -wall -g
+
+# src = $(wildcard *.cpp)
+# obj = $(patsubst %.cpp,%.o,$(SOURCES))
+
+# dynamicpf: $(obj)
+# 	$(CC) $(CFLAGS) -o $@ $^
 
 # .cpp.o:
-#         ${CXX} -c $<
+# 	$(CC) -c $<
 
-CC = g++
+# clean:
+# 	rm -f $(obj) dynamicpf
 
-CFLAGS = -wall -g
+dynamicpf: main.o DynamicOccupancyGrid.o DynamicOccupancyGridMap.o FileManager.o History.o RobotState.o LaserZ.o ControlU.o
+	$(CC) $(CFLAGS) -o dynamicpf main.o DynamicOccupancyGrid.o DynamicOccupancyGridMap.o FileManager.o History.o RobotState.o LaserZ.o ControlU.o
 
-src = $(wildcard *.cpp)
-obj = $(patsubst %.cpp,%.o,$(SOURCES))
+main.o: main.cpp DynamicOccupancyGrid.h DynamicOccupancyGridMap.h FileManager.h History.h RobotState.h LaserZ.h ControlU.h
+	$(CC) $(CFLAGS) -c main.cpp
 
-dynamicpf: $(obj)
-	$(CC) $(CFLAGS) -o $@ $^
+DynamicOccupancyGrid.o: DynamicOccupancyGrid.h
 
-.cpp.o:
-	$(CC) -c $<
+DynamicOccupancyGridMap.o: DynamicOccupancyGridMap.h
+
+FileManager.o: FileManager.h
+
+History.o: History.h
+
+RobotState.o: RobotState.h
+
+LaserZ.o: LaserZ.h
+
+ControlU.o: ControlU.h
 
 clean:
 	rm -f $(obj) dynamicpf
-
