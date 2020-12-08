@@ -47,3 +47,23 @@ std::uint32_t History::getNumSteps() {
 void History::setNumSteps(std::uint32_t num_steps) {
     this->num_steps = num_steps;
 }
+
+std::vector<ControlU> History::getControlHistory() {
+    return this->controls;
+}
+
+std::vector<ControlU> History::getNoisyControlHistory() {
+    return this->noisy_controls;
+}
+
+std::vector<LaserZ> History::getMeasurementHistory() {
+    return this->measurements;
+}
+
+std::vector<LaserZ> History::getNoisyMeasurementHistory() {
+    return this->noisy_measurements;
+}
+
+std::vector<RobotState> History::getRobotStates() {
+    return this->states;
+}

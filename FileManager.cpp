@@ -123,11 +123,11 @@ void FileManager::loadNoisyMeasurements(std::string filename, History *history) 
     std::vector<LaserZ> measurements;
     std::ifstream f(filename, std::ios::in | std::ios::binary);
     for (std::uint32_t i = 0; i < num_steps; i++) {
-        std::vector<double> meas(LaserZ::getLaserCount(), 0.0);
+        std::vector<double> meas;//(LaserZ::getLaserCount(), 0.0);
         for (std::uint16_t j = 0; j < LaserZ::getLaserCount(); j++) {
             float measurement;
             f.read(reinterpret_cast<char *>(&measurement), sizeof(measurement));
-            meas[j] = (double) measurement;
+            meas.push_back((double) measurement); //[j] = (double) measurement;
         }
         LaserZ z(meas);
         measurements.push_back(z);
