@@ -4,6 +4,8 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+LaserZ::laser_angles = new std::vector<double>();
+
 LaserZ::LaserZ() {}
 
 LaserZ::LaserZ(std::vector<double> z) {
@@ -23,19 +25,19 @@ std::vector<double> LaserZ::getMeasurements() {
 }
 
 double LaserZ::getLaserAngle(int laser_index) {
-    return laser_angles[laser_index];
+    return (*laser_angles)[laser_index];
 }
 
 double LaserZ::getLaserCount() {
-    return laser_angles.size();
+    return laser_angles->size();
 }
 
 void LaserZ::setLaserAngles(std::vector<double> angles) {
-    LaserZ::laser_angles = angles;
+    LaserZ::laser_angles = &angles;
 }
 
 int LaserZ::isInitialized() {
-    if (laser_angles.size() == 0) {
+    if (laser_angles->size() == 0) {
         return 0;
     }
     return 1;
