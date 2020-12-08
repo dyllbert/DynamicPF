@@ -42,3 +42,11 @@ void LaserZ::setLaserAngles(std::vector<double> angles) {
 int LaserZ::isInitialized() {
     return 1;
 }
+
+double LaserZ::laserRangeModel(double z, double z_exp) {
+    double a_norm = 0.7;
+    double a_max = 0.3;
+    if (z > LASER_MAX_RANGE) {return a_max;}
+    else {return a_norm * 1/sqrt(2.0 * M_PI * LASER_STD_DEV) * exp(-(pow(z-z_exp, 2)) / (2 * LASER_STD_DEV));}
+}
+
