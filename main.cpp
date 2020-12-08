@@ -211,29 +211,6 @@ void measModel(LaserZ z)
                                     21.0); // Possible way to update weight. Probably Ok to just use
                                            // addition, and not multiplication because we normalize.
 
-            /**
-            // SD of sensor is 3
-            if (abs(expectedRange - currLaserDist) < 1) {
-                // Good match, add weight
-                // add 3
-                currParticle.weight += 3;
-            } else if (abs(expectedRange - currLaserDist) < 3) {
-                // maybe match, add tiny weight
-                // add 1
-                currParticle.weight += 1;
-            } else if (abs(expectedRange - currLaserDist) < 5) {
-                // neutral match, do not change
-            } else if (abs(expectedRange - currLaserDist) < 8) {
-                // tiny bad match, take away tiny weight
-                //-1
-                currParticle.weight += -1;
-            } else {
-                // big bad match, take away big weight
-                //-3
-                currParticle.weight += -3;
-            }
-            */
-
         } // End of for each laser
 
     } // End of for each particle
@@ -307,37 +284,54 @@ int main()
     vector<vector<double>> rawgrid =
         loader.loadGridMap("occupancy_grid.omap"); // This is the prior map before boxes were moved
                                                    // and the current experiment was ran
-    #if PRINT_OUT_OGRID
+#if PRINT_OUT_OGRID
     int print_to_file = 0;
     stringstream ss_omap;
     ofstream ogrid_ascii("ogrid_ascii.txt", ios::out);
-    if (ogrid_ascii) {
+    if (ogrid_ascii)
+    {
         print_to_file = 1;
     }
-    for (uint32_t j = 0; j < rawgrid.size(); j++) {
+    for (uint32_t j = 0; j < rawgrid.size(); j++)
+    {
         ss_omap << "|";
-        if (print_to_file) {ogrid_ascii << "|";}
-        for (uint32_t i = 0; i < rawgrid[0].size(); i++) {
-            if (rawgrid[j][i] <= 0.5) {
+        if (print_to_file)
+        {
+            ogrid_ascii << "|";
+        }
+        for (uint32_t i = 0; i < rawgrid[0].size(); i++)
+        {
+            if (rawgrid[j][i] <= 0.5)
+            {
                 ss_omap << " ";
-                if (print_to_file) {ogrid_ascii << " ";}
+                if (print_to_file)
+                {
+                    ogrid_ascii << " ";
+                }
             }
-            else {
+            else
+            {
                 ss_omap << ".";
-                if (print_to_file) {ogrid_ascii << ".";}
+                if (print_to_file)
+                {
+                    ogrid_ascii << ".";
+                }
             }
         }
         ss_omap << "|\r\n";
-        if (print_to_file) {ogrid_ascii << "|\r\n";}
+        if (print_to_file)
+        {
+            ogrid_ascii << "|\r\n";
+        }
     }
     ogrid_ascii.close();
     std::cout << ss_omap.str();
-    #endif
+#endif
     std::cout << "Loading Static/Dynamic Map\n";
     vector<vector<int>> raw_static_grid = loader.loadStaticMap("permanence.pmap");
     std::cout << "Loading Number of steps\n";
-    std::tuple<double, double> xlim((double)0.0, 1024.0);//(double)rawgrid[0].size());
-    std::tuple<double, double> ylim((double)0.0, 768.0);//(double)rawgrid.size());
+    std::tuple<double, double> xlim((double)0.0, 1024.0); //(double)rawgrid[0].size());
+    std::tuple<double, double> ylim((double)0.0, 768.0);  //(double)rawgrid.size());
     // DynamicOccupancyGridMap ogrid = DynamicOccupancyGridMap(xlim, ylim, rawgrid, raw_static_grid,
     // 0.01, 0.05);
     // Load Controls and Measurements from experiment into memory
@@ -348,16 +342,21 @@ int main()
     loader.loadMeasurements("Measurements (1).data", &history);
     std::cout << "Loading Z noisy\n";
     loader.loadNoisyMeasurements("Measurements_Noisy (1).data", &history);
-    #if PRINT_OUT_NOISY_MEASUREMENTS
+#if PRINT_OUT_NOISY_MEASUREMENTS
     ofstream f_znoisy("noisy_z_ascii.txt", ios::out);
-    if (f_znoisy) {
+    if (f_znoisy)
+    {
         cout << "About to loop through " << history.getNumSteps() << " steps.\n";
-        for (uint32_t i = 0; i < history.getNumSteps(); i++) {
+        for (uint32_t i = 0; i < history.getNumSteps(); i++)
+        {
+            cout << i << endl;
             LaserZ print_z = history.getNoisyMeasurement(i);
             cout << "[" << i << "] About to loop through " << LaserZ::getLaserCount() << " lasers.\n";
-            for (uint32_t j = 0; j < LaserZ::getLaserCount(); j++) {
+            for (uint32_t j = 0; j < LaserZ::getLaserCount(); j++)
+            {
                 f_znoisy << "[" << j << "]" << print_z.getMeasurement(j) << " ";
-                if (print_z.getMeasurement(j) < 0.0) {
+                if (print_z.getMeasurement(j) < 0.0)
+                {
                     cout << "Warning - Measurement of value " << print_z.getMeasurement(j) << "\n";
                 }
             }
@@ -365,14 +364,14 @@ int main()
         }
     }
     f_znoisy.close();
-    #endif
+#endif
     std::cout << "Loading U\n";
     loader.loadControls("Controls (1).data", &history);
     std::cout << "Loading U Noisy\n";
     loader.loadNoisyControls("Controls_Noisy (1).data", &history);
     std::cout << "Loading State\n";
     loader.loadState("State (1).data", &history);
-    // Initialize Particle Filter -Dylan made this 
+    // Initialize Particle Filter -Dylan made this
     std::cout << "Initializing Particle Filter\n";
     init(xlim, ylim, rawgrid, raw_static_grid, 0.01, 0.05);
     // Setup Plotting
@@ -397,11 +396,11 @@ int main()
         cout << "Getting u" << endl;
         ControlU u = history.getNoisyControl(t);
         // RobotState x_true = history.getState(t);   // This is the true value of the state. We can use the initial
-                                                   // value, but nothing else, unless it's for testing.
+        // value, but nothing else, unless it's for testing.
         // LaserZ z_true = history.getMeasurement(t); // Do not use in PF Algorithm - This is the true
-                                                   // value of the measurements. Just for testing.
+        // value of the measurements. Just for testing.
         // ControlU u_true = history.getControl(t);   // Do not use in PF Algorithm - This is the true
-                                                   // value of the controls. Just for testing.
+        // value of the controls. Just for testing.
         // Operate on data to run particle filter algorithm -
         double uarg[2] = {u.getDDist(), u.getDTheta()};
         cout << "Entering motion model" << endl;
