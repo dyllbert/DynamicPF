@@ -13,7 +13,11 @@ void History::setMeasurementHistory(std::vector<LaserZ> measurements) {
 }
 
 void History::setNoisyMeasurementHistory(std::vector<LaserZ> noisy_measurements) {
-    this->noisy_measurements = noisy_measurements;
+    this->noisy_measurements.clear();
+    for (uint32_t i = 0; i < noisy_measurements.size(); i++) {
+        this->noisy_measurements.push_back(noisy_measurements[i]);
+    }
+    // this->noisy_measurements = noisy_measurements;
 }
 
 void History::setRobotStates(std::vector<RobotState> states) {
