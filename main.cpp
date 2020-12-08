@@ -19,7 +19,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#define PRINT_OUT_OGRID 0
+#define PRINT_OUT_OGRID 1
 
 using namespace std;
 
@@ -316,7 +316,7 @@ int main()
     for (uint32_t j = 0; j < rawgrid.size(); j++) {
         ss_omap << "|";
         if (print_to_file) {ogrid_ascii << "|";}
-        for (uint32_t i = 0; i < rawgrid.size(); i++) {
+        for (uint32_t i = 0; i < rawgrid[0].size(); i++) {
             if (rawgrid[j][i] <= 0.5) {
                 ss_omap << " ";
                 if (print_to_file) {ogrid_ascii << " ";}
