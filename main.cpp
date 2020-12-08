@@ -351,8 +351,10 @@ int main()
     #if PRINT_OUT_NOISY_MEASUREMENTS
     ofstream f_znoisy("noisy_z_ascii.txt", ios::out);
     if (f_znoisy) {
+        cout << "About to loop through " << history.getNumSteps() << " steps.\n";
         for (uint32_t i = 0; i < history.getNumSteps(); i++) {
             LaserZ print_z = history.getNoisyMeasurement(i);
+            cout << "[" << i << "] About to loop through " << LaserZ::getLaserCount() << " lasers.\n";
             for (uint32_t j = 0; j < LaserZ::getLaserCount(); j++) {
                 f_znoisy << "[" << j << "]" << print_z.getMeasurement(j) << " ";
                 if (print_z.getMeasurement(j) < 0.0) {
