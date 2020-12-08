@@ -199,9 +199,10 @@ void FileManager::loadSensorAngles(std::string filename) {
     std::vector<double> laser_angles;
     std::uint16_t angle;
     ifstream f(filename, std::ios::in | std::ios::binary);
-    f.seekg(std::ios::end);
-    std::uint64_t num_angles = ((std::uint64_t) f.tellg()) / 2;
-    f.seekg(ifstream::beg);
+    // f.seekg(std::ios::end);
+    // std::uint64_t num_angles = ((std::uint64_t) f.tellg()) / 2;
+    // f.seekg(ifstream::beg);
+    std::uint64_t num_angles = 21;
     for (std::uint64_t i = 0; i < num_angles; i++) {
         std::uint16_t angle;
         f.read(reinterpret_cast<char *>(&angle), sizeof(angle));
