@@ -381,7 +381,7 @@ int main()
     init(xlim, ylim, rawgrid, raw_static_grid, 0.01, 0.05);
     // Setup Plotting
     std::cout << "Setup Plotting\n";
-    uint32_t capture_period = history.getNumSteps() / 16;
+    uint32_t capture_period = 5; // history.getNumSteps() / 16;
     // Loop through the data stream
     std::cout << "Beginning Loop\n";
     for (std::uint32_t t = 0; t < history.getNumSteps(); t++)
