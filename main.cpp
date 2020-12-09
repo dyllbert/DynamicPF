@@ -273,6 +273,17 @@ void resample()
         particleArray[i] = particleArrayCopy[weight_dist(gen)];
         particleArray[i].id = i;
     }
+
+    //Add a bit of noise to each particle after resampleing
+    default_random_engine noise;
+    uniform_real_distribution<double> distXY(0, 0.04);
+    uniform_real_distribution<double> distTheta(0, 0.01);
+    for (int i = 0; i < NUM_PARTICLES; i++)
+    {
+        particleArray[i].x += distXY(noise);
+        particleArray[i].y += distXY(noise);
+        particleArray[i].theta += distTheta(noise);
+    }
 }
 
 int main()
@@ -344,16 +355,19 @@ int main()
     loader.loadNoisyMeasurements("Measurements_Noisy (1).data", &history);
 #if PRINT_OUT_NOISY_MEASUREMENTS
     ofstream f_znoisy("noisy_z_ascii.txt", ios::out);
-    if (history.getNumSteps() != history.getNoisyMeasurementHistory().size()) {
+    if (history.getNumSteps() != history.getNoisyMeasurementHistory().size())
+    {
         cout << "Wrong number of measurements! (" << history.getNoisyMeasurementHistory().size() << "). Should be " << history.getNumSteps() << "\n";
     }
-    if (f_znoisy) {
+    if (f_znoisy)
+    {
         cout << "About to loop through " << history.getNumSteps() << " steps.\n";
         for (uint32_t i = 0; i < history.getNumSteps(); i++)
         {
             cout << i << endl;
             LaserZ print_z = history.getNoisyMeasurement(i);
-            if (print_z.getMeasurements().size() != 21) {
+            if (print_z.getMeasurements().size() != 21)
+            {
                 cout << "ERROR: Z only has " << print_z.getMeasurements().size() << " lasers!\n";
             }
             cout << "[" << i << "] About to loop through " << LaserZ::getLaserCount() << " lasers.\n";
