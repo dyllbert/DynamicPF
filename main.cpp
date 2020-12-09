@@ -150,9 +150,7 @@ void motionModel(double u[])
         double angle = constrainAngle(particleArray[i].theta + u[1]);
         double angleRad = toRadians(angle);
 
-        double tempX =
-            (u[0] * cos(angleRad) +
-             particleArray[i].x);                                   // + distXY(gen); Noise is already in u, don't need to add
+        double tempX = (u[0] * cos(angleRad) + particleArray[i].x); // + distXY(gen); Noise is already in u, don't need to add
         double tempY = (u[0] * sin(angleRad) + particleArray[i].y); // + distXY(gen);
 
         if (tempX > X_MAX)
@@ -181,7 +179,7 @@ cell tupleToCell(tuple<double, double> convert)
     return toReturn;
 }
 
-void measModel(LaserZ z)
+void measModel(LaserZ z, DynamicOccupancyGridMap ogrid)
 {
     // For each particle:
     for (int i = 0; i < NUM_PARTICLES; i++)
@@ -201,11 +199,10 @@ void measModel(LaserZ z)
             passInParticle.y = currParticle.y;
 
             // update particles own map here?
-            particleArray[i].map.integrateLaserRangeRay(passInParticle, currLaserAngle,
-                                                        currLaserDist, MAX_LASER_RANGE);
+            // particleArray[i].map.integrateLaserRangeRay(passInParticle, currLaserAngle, currLaserDist, MAX_LASER_RANGE);
 
-            double expectedRange =
-                currParticle.map.findExpectedRange(passInParticle, currLaserAngle, MAX_LASER_RANGE);
+            //double expectedRange =currParticle.map.findExpectedRange(passInParticle, currLaserAngle, MAX_LASER_RANGE);
+            double expectedRange = ogrid.findExpectedRange(passInParticle, currLaserAngle, MAX_LASER_RANGE);
 
             currParticle.weight += (LaserZ::laserRangeModel(currLaserDist, expectedRange) /
                                     21.0); // Possible way to update weight. Probably Ok to just use
@@ -332,8 +329,7 @@ int main()
     std::cout << "Loading Number of steps\n";
     std::tuple<double, double> xlim((double)0.0, 1024.0); //(double)rawgrid[0].size());
     std::tuple<double, double> ylim((double)0.0, 768.0);  //(double)rawgrid.size());
-    // DynamicOccupancyGridMap ogrid = DynamicOccupancyGridMap(xlim, ylim, rawgrid, raw_static_grid,
-    // 0.01, 0.05);
+    DynamicOccupancyGridMap ogrid = DynamicOccupancyGridMap(xlim, ylim, rawgrid, raw_static_grid,0.01, 0.05);
     // Load Controls and Measurements from experiment into memory
     loader.loadNumSteps("number_of_steps.data", &history);
     std::cout << "Hard Coded Sensor Angles\n";
@@ -344,16 +340,19 @@ int main()
     loader.loadNoisyMeasurements("Measurements_Noisy (1).data", &history);
 #if PRINT_OUT_NOISY_MEASUREMENTS
     ofstream f_znoisy("noisy_z_ascii.txt", ios::out);
-    if (history.getNumSteps() != history.getNoisyMeasurementHistory().size()) {
+    if (history.getNumSteps() != history.getNoisyMeasurementHistory().size())
+    {
         cout << "Wrong number of measurements! (" << history.getNoisyMeasurementHistory().size() << "). Should be " << history.getNumSteps() << "\n";
     }
-    if (f_znoisy) {
+    if (f_znoisy)
+    {
         cout << "About to loop through " << history.getNumSteps() << " steps.\n";
         for (uint32_t i = 0; i < history.getNumSteps(); i++)
         {
             cout << i << endl;
             LaserZ print_z = history.getNoisyMeasurement(i);
-            if (print_z.getMeasurements().size() != 21) {
+            if (print_z.getMeasurements().size() != 21)
+            {
                 cout << "ERROR: Z only has " << print_z.getMeasurements().size() << " lasers!\n";
             }
             cout << "[" << i << "] About to loop through " << LaserZ::getLaserCount() << " lasers.\n";
@@ -379,18 +378,12 @@ int main()
     // Initialize Particle Filter -Dylan made this
     std::cout << "Initializing Particle Filter\n";
     init(xlim, ylim, rawgrid, raw_static_grid, 0.01, 0.05);
-    particleArray[0].x = history.getState(0).x; // Because we have limited compute power, we set 1 particle to the correct position.
-    particleArray[0].y = history.getState(0).y;
-    particleArray[0].theta = history.getState(0).theta;
-    particleCapture[0].x = particleArray[0].x;
-    particleCapture[0].y = particleArray[0].y;
-    particleCapture[0].theta = particleArray[0].theta;
-    std::cout << "Putting 1 particle at (" << particleArray[0].x << "," << particleArray[0].y << "," << particleArray[0].theta << ")\n";
     // Setup Plotting
     std::cout << "Setup Plotting\n";
-    uint32_t capture_period = 1; // history.getNumSteps() / 16;
+    uint32_t capture_period = 25; // history.getNumSteps() / 16;
     // Loop through the data stream
     std::cout << "Beginning Loop\n";
+    RobotState passInRobot;
     for (std::uint32_t t = 0; t < history.getNumSteps(); t++)
     {
         cout << "T is: " + to_string(t) << endl;
@@ -406,19 +399,44 @@ int main()
         cout << "Getting z" << endl;
         LaserZ z = history.getNoisyMeasurement(t);
         cout << "Getting u" << endl;
+
         ControlU u = history.getNoisyControl(t);
-        // RobotState x_true = history.getState(t);   // This is the true value of the state. We can use the initial
-        // value, but nothing else, unless it's for testing.
+        double uarg[2] = {u.getDDist(), u.getDTheta()};
+
+        if (t == 0)
+        {
+            RobotState x_true = history.getState(t); // This is the true value of the state. We can use the initial
+                                                     // value, but nothing else, unless it's for testing.
+            passInRobot = x_true;
+        }
+        else
+        {
+            double angle = constrainAngle(passInRobot.theta + uarg[1]);
+            double angleRad = toRadians(angle);
+
+            double tempX = (uarg[0] * cos(angleRad) + passInRobot.x); // + distXY(gen); Noise is already in u, don't need to add
+            double tempY = (uarg[0] * sin(angleRad) + passInRobot.y); // + distXY(gen);
+            passInRobot.x = tempX;
+            passInRobot.y = tempY;
+            passInRobot.theta = angle;
+        }
+
         // LaserZ z_true = history.getMeasurement(t); // Do not use in PF Algorithm - This is the true
         // value of the measurements. Just for testing.
         // ControlU u_true = history.getControl(t);   // Do not use in PF Algorithm - This is the true
         // value of the controls. Just for testing.
         // Operate on data to run particle filter algorithm -
-        double uarg[2] = {u.getDDist(), u.getDTheta()};
+
+        // Try updating the whole map for the robot instead of the particles
+        for(int a=0;a<21;a++)
+        {
+            ogrid.integrateLaserRangeRay(passInRobot, z.getLaserAngle(a), z.getMeasurement(a), MAX_LASER_RANGE);
+        }
+
         cout << "Entering motion model" << endl;
         motionModel(uarg);
         cout << "Entering meas model" << endl;
-        measModel(z);
+        measModel(z, ogrid);
         cout << "Entering reseample" << endl;
         resample();
     }
