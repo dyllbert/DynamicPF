@@ -380,7 +380,7 @@ int main()
     init(xlim, ylim, rawgrid, raw_static_grid, 0.01, 0.05);
     // Setup Plotting
     std::cout << "Setup Plotting\n";
-    uint32_t capture_period = 5; // history.getNumSteps() / 16;
+    uint32_t capture_period = 25; // history.getNumSteps() / 16;
     // Loop through the data stream
     std::cout << "Beginning Loop\n";
     RobotState passInRobot;
