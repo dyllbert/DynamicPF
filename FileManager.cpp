@@ -240,7 +240,8 @@ void FileManager::loadSensorAngles(std::string filename) {
     LaserZ::setLaserAngles(laser_angles);
 }
 
-bool saveState(vector<RobotState> state_snapshot, std::string filename) {
+bool FileManager::saveState(vector<RobotState> state_snapshot, std::string filename) {
+    if (state_snapshot.size() == 0) { std::cout << "ERROR: snapshot of particles is empty.\n";}
     std::ofstream f(filename, std::ios::out | std::ios::binary);
     if (!f) {std::cout << "ERROR: Unable to open state file.\n";}
     if (!f) {return false;}

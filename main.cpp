@@ -381,20 +381,20 @@ int main()
     init(xlim, ylim, rawgrid, raw_static_grid, 0.01, 0.05);
     // Setup Plotting
     std::cout << "Setup Plotting\n";
-    // uint32_t capture_period = history.getNumSteps() / 16;
+    uint32_t capture_period = 5; // history.getNumSteps() / 16;
     // Loop through the data stream
     std::cout << "Beginning Loop\n";
     for (std::uint32_t t = 0; t < history.getNumSteps(); t++)
     {
         cout << "T is: " + to_string(t) << endl;
         // Print particles
-        // if (t % capture_period == 0)
-        // {
-        //     stringstream ss_fname;
-        //     ss_fname << "Particles_step" << t << "_" << t / capture_period << ".part";
-        //     // loader.saveState(particleCapture, ss_fname.str());
-        //     cout << "Saving to " << ss_fname.str();
-        // }
+        if (t % capture_period == 0)
+        {
+            stringstream ss_fname;
+            ss_fname << "Particles_step" << t << "_" << t / capture_period << ".part";
+            cout << "Saving " << particleCapture.size() << " current particles to " << ss_fname.str() << "\n";
+            loader.saveState(particleCapture, ss_fname.str());
+        }
         // Extract data (get measurement z and control u at this time step t)
         cout << "Getting z" << endl;
         LaserZ z = history.getNoisyMeasurement(t);
