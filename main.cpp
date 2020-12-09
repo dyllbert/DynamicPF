@@ -273,7 +273,7 @@ void resample()
 
     //Add a bit of noise to each particle after resampleing
     default_random_engine noise;
-    uniform_real_distribution<double> distXY(0, 0.04);
+    uniform_real_distribution<double> distXY(0, 0.3);
     uniform_real_distribution<double> distTheta(0, 0.01);
     for (int i = 0; i < NUM_PARTICLES; i++)
     {
