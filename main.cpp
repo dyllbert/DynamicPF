@@ -29,9 +29,9 @@ const int NUM_PARTICLES = 10;
 // Positional uncertainty
 const double sigma_pos[3] = {0.3, 0.3, 0.01};
 const int X_MIN = 0;
-const int X_MAX = 100;
+const int X_MAX = 1024;
 const int Y_MIN = 0;
-const int Y_MAX = 100;
+const int Y_MAX = 768;
 const int T_MIN = 0;
 const int T_MAX = 359;
 const double MAX_LASER_RANGE = 128;
