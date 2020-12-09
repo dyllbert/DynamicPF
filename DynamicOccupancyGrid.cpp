@@ -1,6 +1,8 @@
 #include "DynamicOccupancyGrid.h"
 #include <string>
 #include <iostream>
+#include <time.h>
+#include <algorithm>
 
 DynamicOccupancyGrid::DynamicOccupancyGrid() {
 }
@@ -14,7 +16,6 @@ DynamicOccupancyGrid::DynamicOccupancyGrid(tuple<double,double> xlim, tuple<doub
     if (init_grid.empty()) {
         throw invalid_argument("Initial grid cannot be empty");
     }
-    
     int xdim = init_grid[1].size(); //if we decide on a constant size for our grid, these can be changed
     double xwidth = get<1>(xlim)-get<0>(xlim);
     double resolution_x = xwidth/xdim;
@@ -22,13 +23,14 @@ DynamicOccupancyGrid::DynamicOccupancyGrid(tuple<double,double> xlim, tuple<doub
     double ywidth = get<1>(ylim)-get<0>(ylim);
     double resolution_y = ywidth/ydim;
     double prior = 0.5;
-
+    vector<int> temp(xdim,0);
+    vector<vector<int>> steps_since_last_update(ydim,temp);
     double cell;
     vector<vector<double>> log_grid; 
-    for (int i = 0; i < init_grid.size(); i++) {
+    for (int i = 0; i < ydim; i++) {
         vector<double> temp;
         log_grid.push_back(temp);
-        for (int j = 0; j < init_grid[i].size(); j++) {
+        for (int j = 0; j < xdim; j++) {
             cell = init_grid[i][j];
             if (cell > 1 || cell < 0) {
                 throw invalid_argument("Each cell in the initial grid must contain a probability between 0 and 1");
@@ -59,6 +61,7 @@ DynamicOccupancyGrid::DynamicOccupancyGrid(tuple<double,double> xlim, tuple<doub
     this->ydim = ydim;
     this->prior_lg_odd = log(prior/(1-prior));
     this->st_mtx = st_mtx;
+    this->steps_since_last_update = steps_since_last_update;
     this->p_occ_from_free = p_occ_from_free;
     this->p_free_from_occ = p_free_from_occ;
     this->p_occ_from_occ = 1-p_free_from_occ;
@@ -106,38 +109,48 @@ tuple<double,double> DynamicOccupancyGrid::getCellCenter(tuple<int,int> index) {
 
 void DynamicOccupancyGrid::updateCellWithMeasLogodds(tuple<int,int> index, double l) {
     //update a cell by adding the log odds value, l
-    if(get<0>(index) < 0 || get<0>(index) >= this->xdim) {
+    int idx_x = get<1>(index);
+    int idx_y = get<0>(index);
+    if(idx_y < 0 || idx_y >= this->xdim) {
         throw invalid_argument("X index invalid");
     }
-    if(get<1>(index)  < 0 || get<1>(index) >= this->ydim) {
+    if(idx_x  < 0 || idx_x >= this->ydim) {
         throw invalid_argument("Y index invalid");
     }
     //FOR OUR MAP, IS INDEX[1] FIRST, OR INDEX[0]?
-    this->grid[get<1>(index)][get<0>(index)] += l;
-    this->grid[get<1>(index)][get<0>(index)] -= this->prior_lg_odd;
+    int update_steps = steps_since_last_update[idx_x][idx_y];
+    double p_recurs = 1-1/(1+exp(this->grid[idx_x][idx_y]));;
+    for (int i = 0; i < update_steps; i++) {
+        p_recurs = p_occ_from_occ*p_recurs + p_occ_from_free*(1 - p_recurs);
+    }
+    double l_recurse = log(p_recurs/(1-p_recurs));
+    l_recurse += l;
+    l_recurse -= prior_lg_odd * update_steps;
+    this->grid[idx_x][idx_y] = l_recurse;
+    steps_since_last_update[idx_x][idx_y] = 0;
 }
 
 void DynamicOccupancyGrid::updateDynamicCells() {
     /*
     Updates cells that are dynamic given the probaility that they are to change
    */
-    double p_sum;
-    double l_sum; //log odds
-    double p_recurs; // recursive probability
-    for (int i = 0; i < this->grid.size(); i++) {
-        for (int j = 0; j < this->grid[i].size(); j++) {
-            if (this->st_mtx[i][j] == 0) { //If dynamic
-                p_recurs = 1-1/(1+exp(this->grid[i][j]));
-                //if (p_recurs < 0.5) { //if probably free in the previous time step
-                //    p_sum =  p_occ_from_free*p_recurs + p_occ_from_occ*(1 - p_recurs);
-                //} else { //if probably occupied in the previous time step
-                    p_sum = p_occ_from_occ*p_recurs + p_occ_from_free*(1 - p_recurs);
-                //}
-                l_sum = log(p_sum/(1-p_sum));
-                this->grid[i][j] = l_sum;
-            }
-        }
-    }
+    // double p_sum;
+    // double l_sum; //log odds
+    // double p_recurs; // recursive probability
+    // for (int i = 0; i < ydim; i++) {
+    //     for (int j = 0; j < xdim; j++) {
+    //         if (this->st_mtx[i][j] == 0) { //If dynamic
+    //             p_recurs = 1-1/(1+exp(this->grid[i][j]));
+    //             p_sum = p_occ_from_occ*p_recurs + p_occ_from_free*(1 - p_recurs);
+    //             l_sum = log(p_sum/(1-p_sum));
+    //             this->grid[i][j] = l_sum;
+    //         }
+    //     }
+    // }
+    // for_each(steps_since_last_update.begin(), steps_since_last_update.end(),
+    //       [](vector<int> &n){ transform(n.begin(), n.end(), n.begin(),
+    //       bind2nd(std::plus<int>(), 1));}); 
+        
 }
 
 void DynamicOccupancyGrid::plotGrid() {

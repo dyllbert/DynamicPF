@@ -102,7 +102,10 @@ double DynamicOccupancyGridMap::findExpectedRange(RobotState x_t, double z_theta
 
 void DynamicOccupancyGridMap::integrateLaserRangeRay(RobotState x_t, double z_theta_t, double z_t, double max_range){
     //integrate a laser range measurement into the map
-    this->ogrid.updateDynamicCells();
+    //this->ogrid.updateDynamicCells(); Not necessary anymore, this is taken care of in updateCellWithMeasLogOdds
+    for_each(this->ogrid.steps_since_last_update.begin(), this->ogrid.steps_since_last_update.end(),
+        [](vector<int> &n){ transform(n.begin(), n.end(), n.begin(),
+        bind2nd(std::plus<int>(), 1));}); 
     set<tuple<int,int>> cells_to_update = this->findCellsToUpdateForRay(x_t,z_theta_t,max_range);   
     for (tuple<int,int> idx: cells_to_update) {
         tuple<double,double> cell_pos = this->ogrid.getCellCenter(idx);

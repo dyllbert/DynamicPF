@@ -3,6 +3,7 @@
 #include <set>
 #include <iostream>
 #include <tuple>
+#include <algorithm>
 #include "RobotState.h"
 #include "DynamicOccupancyGrid.h"
 
