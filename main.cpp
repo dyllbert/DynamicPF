@@ -273,8 +273,8 @@ void resample()
 
     //Add a bit of noise to each particle after resampleing
     default_random_engine noise;
-    uniform_real_distribution<double> distXY(0, 5);
-    uniform_real_distribution<double> distTheta(0, .5);
+    uniform_real_distribution<double> distXY(2, 10);
+    uniform_real_distribution<double> distTheta(1, 5);
     for (int i = 0; i < NUM_PARTICLES; i++)
     {
         particleArray[i].x += distXY(noise);
@@ -391,7 +391,8 @@ int main()
     // Initialize Particle Filter -Dylan made this
     std::cout << "Initializing Particle Filter\n";
     init(xlim, ylim, rawgrid, raw_static_grid, 0.01, 0.05);
-    particleArray[0].x = history.getState(0).x; // Because we have limited compute power, we set 1 particle to the correct position.
+    // Because we have limited compute power, we set 1 particle to the correct position.
+    particleArray[0].x = history.getState(0).x; 
     particleArray[0].y = history.getState(0).y;
     particleArray[0].theta = history.getState(0).theta;
     particleCapture[0].x = particleArray[0].x;
