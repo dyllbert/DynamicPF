@@ -5,3 +5,4 @@ testDylan.cpp
 *.o
 dynamicpf
 
+noisy_z_ascii.txt
