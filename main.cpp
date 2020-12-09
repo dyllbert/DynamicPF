@@ -20,7 +20,7 @@
 #endif
 
 #define PRINT_OUT_OGRID 0
-#define PRINT_OUT_NOISY_MEASUREMENTS 1
+#define PRINT_OUT_NOISY_MEASUREMENTS 0
 
 using namespace std;
 
