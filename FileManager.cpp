@@ -209,9 +209,9 @@ void FileManager::loadState(std::string filename, History *history) {
     std::ifstream f(filename, std::ios::in | std::ios::binary);
     if (!f) {std::cout << "ERROR: Unable to open state file.\n";}
     for (std::uint32_t i = 0; i < num_steps; i++) {
-        std::uint32_t x;
-        std::uint32_t y;
-        std::uint32_t direction;
+        float x;
+        float y;
+        float direction;
         f.read(reinterpret_cast<char *>(&x), sizeof(x));
         f.read(reinterpret_cast<char *>(&y), sizeof(y));
         f.read(reinterpret_cast<char *>(&direction), sizeof(direction));

@@ -25,7 +25,7 @@
 using namespace std;
 
 // Some constant values here that can be played with
-const int NUM_PARTICLES = 10;
+const int NUM_PARTICLES = 200;
 // Positional uncertainty
 const double sigma_pos[3] = {0.3, 0.3, 0.01};
 const int X_MIN = 0;
@@ -379,9 +379,16 @@ int main()
     // Initialize Particle Filter -Dylan made this
     std::cout << "Initializing Particle Filter\n";
     init(xlim, ylim, rawgrid, raw_static_grid, 0.01, 0.05);
+    particleArray[0].x = history.getState(0).x; // Because we have limited compute power, we set 1 particle to the correct position.
+    particleArray[0].y = history.getState(0).y;
+    particleArray[0].theta = history.getState(0).theta;
+    particleCapture[0].x = particleArray[0].x;
+    particleCapture[0].y = particleArray[0].y;
+    particleCapture[0].theta = particleArray[0].theta;
+    std::cout << "Putting 1 particle at (" << particleArray[0].x << "," << particleArray[0].y << "," << particleArray[0].theta << ")\n";
     // Setup Plotting
     std::cout << "Setup Plotting\n";
-    uint32_t capture_period = 5; // history.getNumSteps() / 16;
+    uint32_t capture_period = 1; // history.getNumSteps() / 16;
     // Loop through the data stream
     std::cout << "Beginning Loop\n";
     for (std::uint32_t t = 0; t < history.getNumSteps(); t++)
