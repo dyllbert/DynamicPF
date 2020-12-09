@@ -154,8 +154,8 @@ void FileManager::loadNoisyMeasurements(std::string filename, History *history) 
     if (measurements.size() != history->getNumSteps()) {
         std::cout << "FileManager: ERROR: Did not read all measurements\n";
     }
-    history->setMeasurementHistory(measurements);
-    if (history->getMeasurementHistory().size() != history->getNumSteps()) {
+    history->setNoisyMeasurementHistory(measurements);
+    if (history->getNoisyMeasurementHistory().size() != history->getNumSteps()) {
         std::cout << "FileManager: ERROR: Did not set history correctly!\n";
     }
 }
@@ -197,7 +197,7 @@ void FileManager::loadNoisyControls(std::string filename, History *history) {
         controls.push_back(u);
     }
     f.close();
-    history->setControlHistory(controls);
+    history->setNoisyControlHistory(controls);
 }
 
 void FileManager::loadState(std::string filename, History *history) {
