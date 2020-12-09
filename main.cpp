@@ -391,6 +391,12 @@ int main()
     // Initialize Particle Filter -Dylan made this
     std::cout << "Initializing Particle Filter\n";
     init(xlim, ylim, rawgrid, raw_static_grid, 0.01, 0.05);
+    particleArray[0].x = history.getState(0).x; // Because we have limited compute power, we set 1 particle to the correct position.
+    particleArray[0].y = history.getState(0).y;
+    particleArray[0].theta = history.getState(0).theta;
+    particleCapture[0].x = particleArray[0].x;
+    particleCapture[0].y = particleArray[0].y;
+    particleCapture[0].theta = particleArray[0].theta;
     // Setup Plotting
     std::cout << "Setup Plotting\n";
     uint32_t capture_period = 25; // history.getNumSteps() / 16;
